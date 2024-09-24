@@ -18,9 +18,23 @@ correctSentence("Greetings, friends.") == "Greetings, friends."
  */
 
 export default function correctSentence(text) {
-  // your solution goes here
-  if (text.charAt(text.length - 1) !== ".") {
-    text = text + '.';
+  if (typeof text === "string") {
+    text = [text]; 
   }
-  return text.charAt(0).toUpperCase() + text.slice(1);
+
+  if (Array.isArray(text) && text.every(i => typeof i === "string")) {
+    const processedArray = text
+      .map(str => str.trim())
+      .filter(str => str.length > 0); 
+
+    let result = processedArray.join(" ");
+
+    if (result.charAt(result.length - 1) !== ".") {
+      result = result + ".";
+    }
+
+    return result.charAt(0).toUpperCase() + result.slice(1);
+  }
+
+  return false;
 }

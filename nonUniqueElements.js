@@ -24,11 +24,45 @@ nonUniqueElements([5, 5, 5, 5, 5]) == [5, 5, 5, 5, 5]
 nonUniqueElements([10, 9, 10, 10, 9, 8]) == [10, 9, 10, 10, 9]
  */
 
-export default function nonUniqueElements(data) {
-  const frequencyMap = data.reduce((acc, num) => {
-    acc[num] = (acc[num] || 0) + 1;
-    return acc;
-  }, {});
+class Counter {
+  constructor() {
+    this.map = new Map();
+  }
 
-  return data.filter(num => frequencyMap[num] > 1);
+  set(key, value) {
+    this.map.set(key, value);
+  }
+
+  get(key) {
+    return this.map.get(key) || 0;
+  }
+
+  has(key) {
+    return this.map.has(key);
+  }
+
+  increment(key) {
+    this.set(key, this.get(key) + 1);
+  }
+
+  decrement(key) {
+    this.set(key, this.get(key) - 1);
+  }
 }
+
+export default function nonUniqueElements(data) {
+  if (
+    !Array.isArray(data) ||
+    !data.every((i) => typeof i === "number" && !isNaN(i))
+  ) {
+    return false;
+  }
+
+  const counter = data.reduce((acc, num) => {
+    acc.increment(num);
+    return acc;
+  }, new Counter());
+
+  return data.filter((num) => counter.get(num) > 1, {});
+}
+
