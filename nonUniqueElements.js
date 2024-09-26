@@ -25,20 +25,19 @@ nonUniqueElements([10, 9, 10, 10, 9, 8]) == [10, 9, 10, 10, 9]
  */
 
 class Counter {
-  constructor() {
-    this.map = new Map();
-  }
+
+  _map = {};
 
   set(key, value) {
-    this.map.set(key, value);
+    this._map[key] = value;
   }
 
   get(key) {
-    return this.map.get(key) || 0;
+    return this._map[key] || 0;
   }
 
   has(key) {
-    return this.map.has(key);
+    return this._map.hasOwnProperty(key);
   }
 
   increment(key) {
@@ -51,18 +50,17 @@ class Counter {
 }
 
 export default function nonUniqueElements(data) {
-  if (
-    !Array.isArray(data) ||
-    !data.every((i) => typeof i === "number" && !isNaN(i))
-  ) {
+  if (!Array.isArray(data)) {
     return false;
   }
 
-  const counter = data.reduce((acc, num) => {
-    acc.increment(num);
-    return acc;
-  }, new Counter());
+  const counter = new Counter();
+  for (const num of data) {
+    if (typeof num !== "number" || isNaN(num)) {
+      return false;
+    }
+    counter.increment(num);
+  }
 
   return data.filter((num) => counter.get(num) > 1, {});
 }
-

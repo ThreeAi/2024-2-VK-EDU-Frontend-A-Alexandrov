@@ -18,23 +18,28 @@ correctSentence("Greetings, friends.") == "Greetings, friends."
  */
 
 export default function correctSentence(text) {
-  if (typeof text === "string") {
-    text = [text]; 
-  }
+  let res = "";
 
-  if (Array.isArray(text) && text.every(i => typeof i === "string")) {
-    const processedArray = text
-      .map(str => str.trim())
-      .filter(str => str.length > 0); 
+  if (Array.isArray(text)) {
+    for (const str of text) {
+      if (typeof str !== "string") {
+        return false;
+      }
 
-    let result = processedArray.join(" ");
-
-    if (result.charAt(result.length - 1) !== ".") {
-      result = result + ".";
+      if (str.trim().length > 0) {
+        res += str.trim() + " "; 
+      }
     }
-
-    return result.charAt(0).toUpperCase() + result.slice(1);
+    res = res.trim();
+  } else if (typeof text === "string") {
+    res = text;
+  } else {
+    return false;
   }
 
-  return false;
+  if (res.charAt(res.length - 1) !== ".") {
+    res = res + ".";
+  }
+
+  return res.charAt(0).toUpperCase() + res.slice(1);
 }
