@@ -1,7 +1,12 @@
 import "./index.css";
+import avatar from './img/avatar.jpg';
+import img from './img/img.png';
 const form = document.querySelector("form");
 const messageInput = document.getElementsByClassName("message-input")[0];
 const messagesContainer = document.getElementsByClassName("chat-body")[0];
+
+document.getElementsByClassName("avatar")[0].src = avatar; 
+document.getElementsByClassName("image")[0].src = img; 
 
 window.addEventListener("load", () => {
   loadMessages();
