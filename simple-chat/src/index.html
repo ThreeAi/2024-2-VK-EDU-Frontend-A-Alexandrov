@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <meta charset="UTF-8" />
+    <title>Send a message</title>
+  </head>
+  <body>
+    <div class="chat-container">
+      <div class="chat-header">
+        <div class="chat-header-content">
+          <span class="material-symbols-outlined"> arrow_back_ios </span>
+          <img src="src/img/avatar.jpg" alt="Avatar" class="avatar" />
+          <div class="chat-user-info">
+            <h3 class="user-name">ThreeAi</h3>
+            <p class="last-seen">была 2 часа назад</p>
+          </div>
+
+          <span class="material-symbols-outlined"> search </span>
+          <span class="material-symbols-outlined"> more_vert </span>
+        </div>
+      </div>
+      <div class="chat-body-footer">
+        <div class="chat-body">
+          <div class="message-received-container">
+            <div class="message message-received">
+              <p>Я тут кое-что нарисовал! Посмотри как будет выглядеть.</p>
+              <p class="timestamp">10:53</p>
+            </div>
+          </div>
+          <div class="message-received-container">
+            <div class="message message-received image-message">
+              <img src="src/img/img.png" alt="Delivered to You" class="image" />
+              <p class="timestamp">10:53</p>
+            </div>
+          </div>
+          <div class="message-received-container">
+            <div class="message message-received">
+              <p>Тебе нравится как я нарисовал?</p>
+              <p class="timestamp">10:53</p>
+            </div>
+          </div>
+          <div class="message-send-container">
+            <div class="message message-send">
+              <p>Горжусь тобой! Ты крутой!</p>
+              <p class="timestamp">10:53</p>
+            </div>
+          </div>
+          <div class="message-send-container">
+            <div class="message message-send">
+              <p>Ты молодец!</p>
+              <p class="timestamp">10:53</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-footer">
+          <form class="form" action="/">
+            <input type="text" class="message-input" placeholder="Сообщение" />
+          </form>
+          <span class="material-symbols-outlined"> attachment </span>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
