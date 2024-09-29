@@ -86,6 +86,30 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./img/avatar.jpg":
+/*!************************!*\
+  !*** ./img/avatar.jpg ***!
+  \************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"src/img/avatar.jpg\");\n\n//# sourceURL=webpack:///./img/avatar.jpg?");
+
+/***/ }),
+
+/***/ "./img/img.png":
+/*!*********************!*\
+  !*** ./img/img.png ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (__webpack_require__.p + \"src/img/img.png\");\n\n//# sourceURL=webpack:///./img/img.png?");
+
+/***/ }),
+
 /***/ "./index.css":
 /*!*******************!*\
   !*** ./index.css ***!
@@ -105,7 +129,7 @@ eval("// extracted by mini-css-extract-plugin\n\n//# sourceURL=webpack:///./inde
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ \"./index.css\");\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);\n\nvar form = document.querySelector(\"form\");\nvar messageInput = document.getElementsByClassName(\"message-input\")[0];\nvar messagesContainer = document.getElementsByClassName(\"chat-body\")[0];\nwindow.addEventListener(\"load\", function () {\n  loadMessages();\n});\nform.addEventListener(\"submit\", handleSubmit);\nform.addEventListener(\"keypress\", handleKeyPress);\nfunction handleSubmit(event) {\n  event.preventDefault();\n  if (messageInput.value.trim() === '') return;\n  var message = {\n    sender: 'User',\n    text: messageInput.value.trim(),\n    time: new Date().toLocaleTimeString([], {\n      hour: '2-digit',\n      minute: '2-digit'\n    })\n  };\n  saveMessage(message);\n  appendMessage(message);\n  messageInput.value = '';\n}\nfunction handleKeyPress(event) {\n  if (event.keyCode === 13) {\n    form.dispatchEvent(new Event(\"submit\"));\n  }\n}\nfunction saveMessage(message) {\n  var messages = JSON.parse(localStorage.getItem(\"chatMessages\")) || [];\n  messages.push(message);\n  localStorage.setItem(\"chatMessages\", JSON.stringify(messages));\n}\nfunction loadMessages() {\n  var messages = JSON.parse(localStorage.getItem(\"chatMessages\")) || [];\n  messages.forEach(function (message) {\n    appendMessage(message);\n  });\n}\nfunction appendMessage(message) {\n  var messageSendContainer = document.createElement(\"div\");\n  messageSendContainer.classList.add(\"message-send-container\");\n  var messageDiv = document.createElement(\"div\");\n  messageDiv.classList.add(\"message\", \"message-send\");\n  messageDiv.innerHTML = \"\\n      <p>\".concat(message.text, \"</p>\\n      <p class=\\\"timestamp\\\">\").concat(message.time, \"</p>\\n    \");\n  messageSendContainer.appendChild(messageDiv);\n  messagesContainer.appendChild(messageSendContainer);\n  messagesContainer.scrollTop = messagesContainer.scrollHeight;\n}\n\n//# sourceURL=webpack:///./index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ \"./index.css\");\n/* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_index_css__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _img_avatar_jpg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./img/avatar.jpg */ \"./img/avatar.jpg\");\n/* harmony import */ var _img_img_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./img/img.png */ \"./img/img.png\");\n\n\n\nvar form = document.querySelector(\"form\");\nvar messageInput = document.getElementsByClassName(\"message-input\")[0];\nvar messagesContainer = document.getElementsByClassName(\"chat-body\")[0];\ndocument.getElementsByClassName(\"avatar\")[0].src = _img_avatar_jpg__WEBPACK_IMPORTED_MODULE_1__[\"default\"];\ndocument.getElementsByClassName(\"image\")[0].src = _img_img_png__WEBPACK_IMPORTED_MODULE_2__[\"default\"];\nwindow.addEventListener(\"load\", function () {\n  loadMessages();\n});\nform.addEventListener(\"submit\", handleSubmit);\nform.addEventListener(\"keypress\", handleKeyPress);\nfunction handleSubmit(event) {\n  event.preventDefault();\n  if (messageInput.value.trim() === '') return;\n  var message = {\n    sender: 'User',\n    text: messageInput.value.trim(),\n    time: new Date().toLocaleTimeString([], {\n      hour: '2-digit',\n      minute: '2-digit'\n    })\n  };\n  saveMessage(message);\n  appendMessage(message);\n  messageInput.value = '';\n}\nfunction handleKeyPress(event) {\n  if (event.keyCode === 13) {\n    form.dispatchEvent(new Event(\"submit\"));\n  }\n}\nfunction saveMessage(message) {\n  var messages = JSON.parse(localStorage.getItem(\"chatMessages\")) || [];\n  messages.push(message);\n  localStorage.setItem(\"chatMessages\", JSON.stringify(messages));\n}\nfunction loadMessages() {\n  var messages = JSON.parse(localStorage.getItem(\"chatMessages\")) || [];\n  messages.forEach(function (message) {\n    appendMessage(message);\n  });\n}\nfunction appendMessage(message) {\n  var messageSendContainer = document.createElement(\"div\");\n  messageSendContainer.classList.add(\"message-send-container\");\n  var messageDiv = document.createElement(\"div\");\n  messageDiv.classList.add(\"message\", \"message-send\");\n  messageDiv.innerHTML = \"\\n      <p>\".concat(message.text, \"</p>\\n      <p class=\\\"timestamp\\\">\").concat(message.time, \"</p>\\n    \");\n  messageSendContainer.appendChild(messageDiv);\n  messagesContainer.appendChild(messageSendContainer);\n  messagesContainer.scrollTop = messagesContainer.scrollHeight;\n}\n\n//# sourceURL=webpack:///./index.js?");
 
 /***/ })
 
