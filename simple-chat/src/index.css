@@ -151,6 +151,10 @@ body {
   background-color: #f0f0f0;
 }
 
+input:focus {
+  outline: none;
+}
+
 .material-symbols-outlined {
   margin: auto 5px;
   cursor: pointer;
