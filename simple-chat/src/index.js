@@ -14,6 +14,22 @@ window.addEventListener("load", () => {
   loadMessages();
 });
 
+messageInput.addEventListener('input', function() {
+  const lineHeight = parseInt(window.getComputedStyle(this).lineHeight);
+  const maxRows = 5;
+
+  this.rows = 1;
+  const currentRows = Math.floor(this.scrollHeight / lineHeight);
+
+  if (currentRows < maxRows) {
+    this.rows = currentRows;
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  } else {
+    this.rows = maxRows; 
+    this.style.overflowY = 'auto'; 
+  }
+});
+
 form.addEventListener("submit", handleSubmit);
 form.addEventListener("keypress", handleKeyPress);
 
@@ -38,7 +54,15 @@ function handleSubmit(event) {
 
 function handleKeyPress(event) {
   if (event.keyCode === 13) {
-    form.dispatchEvent(new Event("submit"));
+    if (event.shiftKey) {
+      messageInput.value += "\n"; 
+      messageInput.dispatchEvent(new Event("input")); 
+      event.preventDefault(); 
+    } else {
+      event.preventDefault(); 
+      form.dispatchEvent(new Event("submit"));
+      messageInput.dispatchEvent(new Event("input")); 
+    }
   }
 }
 
@@ -60,10 +84,11 @@ function appendMessage(message) {
   const messageDiv = document.createElement("div");
   messageDiv.classList.add("message", "message-send");
 
-  messageDiv.innerHTML = `
-      ${message.text}
-      <p class="timestamp">${message.time}</p>
-    `;
+  messageDiv.innerText = `${message.text}`;
+  const messageTime = document.createElement("p");
+  messageTime.classList.add("timestamp");
+  messageTime.innerText = `${message.time}`;
+  messageDiv.appendChild(messageTime);
   messageSendContainer.appendChild(messageDiv);
   messagesContainer.appendChild(messageSendContainer);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
