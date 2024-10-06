@@ -42,6 +42,11 @@ body {
   align-items: center;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .avatar {
   width: 40px;
   height: 40px;
@@ -161,7 +166,6 @@ textarea:focus {
 }
 
 .material-symbols-outlined {
-  align-self: flex-end;
   margin: 5px;
   cursor: pointer;
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
