@@ -85,6 +85,8 @@ a {
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
+  overflow-wrap: break-word;
+  word-break: break-word;
   padding: 8px 8px 2px 8px;
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.4);
 }
