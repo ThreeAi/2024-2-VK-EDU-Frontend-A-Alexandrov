@@ -42,6 +42,11 @@ body {
   align-items: center;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .avatar {
   width: 40px;
   height: 40px;
@@ -80,6 +85,8 @@ body {
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
+  overflow-wrap: break-word;
+  word-break: break-word;
   padding: 8px 8px 2px 8px;
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.4);
 }
@@ -161,7 +168,6 @@ textarea:focus {
 }
 
 .material-symbols-outlined {
-  align-self: flex-end;
   margin: 5px;
   cursor: pointer;
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
