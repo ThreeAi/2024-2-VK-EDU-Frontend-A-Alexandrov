@@ -35,15 +35,15 @@ module.exports = {
                     },
                 ],
             },
-            // {
-            //     test: /shadow\.css$/,
-            //     include: SRC_PATH,
-            //     use: [
-            //         {
-            //             loader: 'css-loader'
-            //         },
-            //     ],
-            // },
+            {
+                test: /\.s[ac]ss$/i,
+                include: SRC_PATH,
+                use: [
+                  "style-loader",
+                  "css-loader",
+                  "sass-loader",
+                ],
+              },
             {
                 test: /\.css$/,
                 include: SRC_PATH,

@@ -46,10 +46,11 @@
 }
 
 .unread-count {
-	background-color: #8c1af6;
+	background-color: rgb(139, 25, 245);
 	color: white;
 	padding: 2px 5px;
 	border-radius: 10px;
+	animation: pulse-unread 2s infinite;
 }
 
 .chat-symbol {
@@ -65,6 +66,7 @@
 	border-radius: 10px;
 	display: flex;
 	align-items: center;
+	animation: pulse-taged-unread 2s infinite;
 }
 
 .taged-unread-count::before {
@@ -72,4 +74,39 @@
 	font-family: "Material Symbols Outlined";
 	margin-right: 2px;
 	font-weight: bold;
+}
+
+.chat-item-animation {
+	opacity: 0;
+	transform: translateY(-50px);
+	transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.appear {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+@keyframes pulse-unread {
+	0% {
+		box-shadow: 0 0 0 0 rgb(139, 25, 245);
+	}
+	70% {
+		box-shadow: 0 0 0 5px rgba(139, 25, 245, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(139, 25, 245, 0);
+	}
+}
+
+@keyframes pulse-taged-unread {
+	0% {
+		box-shadow: 0 0 0 0 rgb(236, 191, 67);
+	}
+	70% {
+		box-shadow: 0 0 0 5px rgba(236, 191, 67, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(236, 191, 67, 0);
+	}
 }
