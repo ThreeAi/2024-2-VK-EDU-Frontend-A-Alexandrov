@@ -6,13 +6,19 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta content="true" name="HandheldFriendly" />
+    <meta content="width" name="MobileOptimized" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
     <title>Send a message</title>
   </head>
   <body>
-    <div class="chat-container">
+    <div class="chat-container ">
       <div class="chat-header">
         <div class="chat-header-content">
-          <span class="material-symbols-outlined"> arrow_back_ios </span>
+          <a href="./chats.html">
+            <span class="material-symbols-outlined">arrow_back_ios</span>
+          </a>
           <img alt="Avatar" class="avatar" />
           <div class="chat-user-info">
             <h3 class="user-name">ThreeAi</h3>
@@ -25,6 +31,7 @@
       </div>
       <div class="chat-body-footer">
         <div class="chat-body">
+          <div class="overlay"></div>
           <div class="message-received-container">
             <div class="message message-received">
               <p>Я тут кое-что нарисовал! Посмотри как будет выглядеть.</p>
@@ -65,6 +72,5 @@
         </div>
       </div>
     </div>
-    <script src="script.js"></script>
   </body>
 </html>

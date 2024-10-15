@@ -9,6 +9,8 @@ const webpack = require('webpack');
 const SRC_PATH = path.resolve(__dirname, 'src');
 const BUILD_PATH = path.resolve(__dirname, 'build');
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 module.exports = {
     context: SRC_PATH,
     entry: {
@@ -34,24 +36,20 @@ module.exports = {
                 ],
             },
             {
-                test: /shadow\.css$/,
+                test: /\.s[ac]ss$/i,
                 include: SRC_PATH,
                 use: [
-                    {
-                        loader: 'css-loader'
-                    },
+                  "style-loader",
+                  "css-loader",
+                  "sass-loader",
                 ],
-            },
+              },
             {
-                test: /index\.css$/,
+                test: /\.css$/,
                 include: SRC_PATH,
                 use: [
-                    {
-                        loader: MiniCSSExtractPlugin.loader,
-                    },
-                    {
-                        loader: 'css-loader',
-                    },
+                    isDevelopment ? 'style-loader' : MiniCSSExtractPlugin.loader,
+                    'css-loader',
                 ],
             },
             {
@@ -61,12 +59,18 @@ module.exports = {
         ],
     },
     plugins: [
-        new MiniCSSExtractPlugin({
-            filename: 'style.css',
-        }),
+        ...(!isDevelopment ? [
+            new MiniCSSExtractPlugin({
+                filename: '[name].css',
+            })
+        ] : []),
         new HTMLWebpackPlugin({
             filename: 'index.html',
             template: './index.html'
+        }),
+        new HTMLWebpackPlugin({
+            filename: 'chats.html', 
+            template: './chats.html' 
         })
     ]
 };
