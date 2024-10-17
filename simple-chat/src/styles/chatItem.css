@@ -1,0 +1,75 @@
+.chat-list {
+	overflow-y: auto;
+	scrollbar-width: none;
+}
+
+.chat-item {
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	padding: 10px 0;
+	border-bottom: 1px solid #ccc;
+}
+
+.avatar-conteiner {
+	margin: auto 15px;
+}
+
+.chat-message {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	flex-grow: 1;
+	padding-left: 10px;
+}
+
+.chat-message p {
+	color: gray;
+}
+
+.chat-name {
+	font-weight: bold;
+}
+
+.chat-details {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin: auto 15px;
+}
+
+.chat-time {
+	font-size: 12px;
+	color: gray;
+	margin-right: 3px;
+}
+
+.unread-count {
+	background-color: #8c1af6;
+	color: white;
+	padding: 2px 5px;
+	border-radius: 10px;
+}
+
+.chat-symbol {
+	margin: 0;
+	cursor: default;
+	color: #8c1af6;
+}
+
+.taged-unread-count {
+	background-color: rgb(236, 191, 67);
+	color: black;
+	padding: 2px 5px;
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.taged-unread-count::before {
+	content: "alternate_email";
+	font-family: "Material Symbols Outlined";
+	margin-right: 2px;
+	font-weight: bold;
+}
