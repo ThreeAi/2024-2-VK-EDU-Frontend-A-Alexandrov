@@ -1,4 +1,4 @@
-import "./index.css";
+import "./index.scss";
 import avatar from "./img/avatar.jpg";
 import img from "./img/img.png";
 import "./chats.js";

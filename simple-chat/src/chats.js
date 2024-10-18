@@ -103,7 +103,32 @@ document.addEventListener("DOMContentLoaded", () => {
 		document
 			.querySelector(".floating-btn")
 			.addEventListener("click", () => {
-				alert("Создать новый чат");
+				const newChat = {
+					avatar: avatar,
+					name: "Новый чат",
+					message: "Это новый чат!",
+					time: new Date().toLocaleTimeString([], {
+						hour: "2-digit",
+						minute: "2-digit",
+					}),
+					unread: null,
+					tag: false,
+					read: false,
+				};
+
+				const chatItemHTML = ChatItem(newChat);
+				chatList.insertAdjacentHTML("afterbegin", chatItemHTML);
+
+				const newChatElement = chatList.firstElementChild;
+				newChatElement.classList.add("chat-item-animation");
+
+				requestAnimationFrame(() => {
+					newChatElement.classList.add("appear");
+				});
+
+				newChatElement.addEventListener("click", () => {
+					window.location.href = "./index.html";
+				});
 			});
 	}
 });
