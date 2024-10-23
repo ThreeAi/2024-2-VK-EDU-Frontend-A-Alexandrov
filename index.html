@@ -1,76 +1,18 @@
-<!DOCTYPE html>
-<html>
-  <head lang="en">
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta content="true" name="HandheldFriendly" />
     <meta content="width" name="MobileOptimized" />
     <meta content="yes" name="apple-mobile-web-app-capable" />
-    <title>Send a message</title>
+    <title>ChatApp</title>
+    <script type="module" crossorigin src="/assets/index-3yhaJ2Ym.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BW7FdJCz.css">
   </head>
   <body>
-    <div class="chat-container ">
-      <div class="chat-header">
-        <div class="chat-header-content">
-          <a href="./chats.html">
-            <span class="material-symbols-outlined">arrow_back_ios</span>
-          </a>
-          <img alt="Avatar" class="avatar" />
-          <div class="chat-user-info">
-            <h3 class="user-name">ThreeAi</h3>
-            <p class="last-seen">была 2 часа назад</p>
-          </div>
-
-          <span class="material-symbols-outlined"> search </span>
-          <span class="material-symbols-outlined"> more_vert </span>
-        </div>
-      </div>
-      <div class="chat-body-footer">
-        <div class="chat-body">
-          <div class="overlay"></div>
-          <div class="message-received-container">
-            <div class="message message-received">
-              <p>Я тут кое-что нарисовал! Посмотри как будет выглядеть.</p>
-              <p class="timestamp">10:53</p>
-            </div>
-          </div>
-          <div class="message-received-container">
-            <div class="message message-received image-message">
-              <img alt="Delivered to You" class="image" />
-              <p class="timestamp">10:53</p>
-            </div>
-          </div>
-          <div class="message-received-container">
-            <div class="message message-received">
-              <p>Тебе нравится как я нарисовал?</p>
-              <p class="timestamp">10:53</p>
-            </div>
-          </div>
-          <div class="message-send-container">
-            <div class="message message-send">
-              <p>Горжусь тобой! Ты крутой!</p>
-              <p class="timestamp">10:53</p>
-            </div>
-          </div>
-          <div class="message-send-container">
-            <div class="message message-send">
-              <p>Ты молодец!</p>
-              <p class="timestamp">10:53</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="chat-footer">
-          <form class="form" action="/">
-            <textarea rows="1" wrap="soft" class="message-input" placeholder="Сообщение"></textarea>
-          </form>
-          <span class="material-symbols-outlined"> attachment </span>
-        </div>
-      </div>
-    </div>
-  <script type="text/javascript" src="bundle.js"></script></body>
+    <div id="root"></div>
+  </body>
 </html>
