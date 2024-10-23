@@ -1,9 +1,12 @@
 .chat-container {
+    position: relative;
 	display: flex;
 	flex-direction: column;
-    justify-content: flex-start;
+    justify-content: start;
+    align-items: center;
 	height: 100vh;
 	width: 100vw;
+    overflow-y: auto;
 	background-color: #f7f7f7;
 }
 
@@ -12,7 +15,7 @@
     padding: 15px;
 	justify-content: center;
 	align-items: center;
-	position: fixed;
+	position: absolute;
 	right: 20px;
 	bottom: 20px;
 	background-color: rgb(255, 255, 0);
