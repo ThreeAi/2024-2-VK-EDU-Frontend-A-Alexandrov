@@ -1,0 +1,35 @@
+.chat-header {
+	width: 100vw;
+	background-color: #9c27b0;
+	padding: 10px;
+	box-sizing: border-box;
+	color: white;
+}
+
+.chat-header-content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.avatar {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+}
+
+.chat-user-info {
+	flex-grow: 1;
+	margin-left: 10px;
+}
+
+.user-name {
+	font-size: 16px;
+    margin-top: 0;
+	margin-bottom: 5px;
+}
+
+.last-seen {
+	font-size: 12px;
+    margin: 0;
+}
