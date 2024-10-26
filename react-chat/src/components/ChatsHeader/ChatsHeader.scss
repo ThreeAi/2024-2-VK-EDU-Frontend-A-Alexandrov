@@ -1,0 +1,22 @@
+.chats-header {
+    width: 100vw;
+	background-color: #9c27b0;
+	padding: 10px;
+	color: white;
+    box-sizing: border-box;
+}
+
+.chat-header-content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.chats-title {
+	height: 45px;
+	align-content: center;
+	flex-grow: 1;
+	margin: 0 0 0 30px;
+	font-size: 18px;
+}
+

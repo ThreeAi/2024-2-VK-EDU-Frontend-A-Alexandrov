@@ -1,0 +1,31 @@
+.chat-footer {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	padding: 8px;
+	box-sizing: border-box;
+    background-color: white;
+	border-top: 1px solid #ddd;
+}
+
+
+.form {
+	display: flex;
+	flex-grow: 1;
+}
+
+.message-input {
+	flex-grow: 1;
+	margin: 8px;
+	border: none;
+	resize: none;
+	overflow-y: hidden;
+	scrollbar-width: none;
+	font-size: inherit;
+	line-height: 1;
+    font-family: Arial, sans-serif;
+}
+
+textarea:focus {
+	outline: none;
+}

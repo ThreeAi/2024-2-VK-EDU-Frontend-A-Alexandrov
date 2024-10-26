@@ -1,0 +1,43 @@
+.chat-container {
+    position: relative;
+	display: flex;
+	flex-direction: column;
+    justify-content: start;
+    align-items: center;
+	height: 100vh;
+	width: 100vw;
+    overflow-y: auto;
+	background-color: #f7f7f7;
+}
+
+.floating-btn {
+	display: flex;
+    padding: 15px;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	right: 20px;
+	bottom: 20px;
+	background-color: rgb(255, 255, 0);
+	border: none;
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	font-size: 36px;
+	cursor: pointer;
+	&:hover {
+		animation: pulse 1s infinite;
+	}
+}
+
+@keyframes pulse {
+	0% {
+		box-shadow: 0 0 0 0 rgb(255, 255, 0);
+	}
+	70% {
+		box-shadow: 0 0 0 15px rgba(204, 169, 44, 0);
+	}
+	100% {
+		box-shadow: 0 0 0 0 rgba(204, 169, 44, 0);
+	}
+}
