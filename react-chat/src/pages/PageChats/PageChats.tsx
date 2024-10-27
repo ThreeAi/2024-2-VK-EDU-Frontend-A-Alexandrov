@@ -1,19 +1,21 @@
 import { useState, useContext } from "react";
 import ChatsHeader from "../../components/ChatsHeader";
-import ChatsList from "../../components/ChatsList";
+import ChatsList from "../../modules/ChatsList";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import "./PageChats.scss";
 import avatar from '../../assets/img/avatar.jpg';
 import { PageContext } from "../../utils/PageContext";
+import ChatLayout from "../../components/ChatLayout";
 
 const PageChats = () => {
 
-    const { currentPage } = useContext(PageContext);
+    const { data } = useContext(PageContext);
 
-    const [chats, setChats] = useState(currentPage.data.chats);
+    const [chats, setChats] = useState(data.listChats.data.chats);
 
     const addNewChat = () => {
         const newChat = {
+            id: 0,
             new: true,
             avatar: avatar,
             name: "Новый чат",
@@ -30,8 +32,9 @@ const PageChats = () => {
     }
     
 	return (
-		<div className="chat-container">
+		<ChatLayout>
 			<ChatsHeader />
+
 			<ChatsList chats={chats} />
 
 			<EditOutlinedIcon
@@ -39,7 +42,7 @@ const PageChats = () => {
 				style={{ fontSize: "35px" }}
 				className="floating-btn material-symbols-outlined"
 			/>
-		</div>
+		</ChatLayout>
 	);
 };
 

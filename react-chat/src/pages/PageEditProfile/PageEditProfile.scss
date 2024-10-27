@@ -1,0 +1,23 @@
+.profile-form {
+    display: flex;
+    gap: 40px;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: #f9f9f9;
+
+    .avatar {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin-bottom: 20px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ccc;
+        }
+    }
+}

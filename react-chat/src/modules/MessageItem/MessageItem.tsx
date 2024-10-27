@@ -1,7 +1,12 @@
-import "./Message.scss";
+import { Message } from "../../utils/const";
+import "./MessageItem.scss";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 
-const Message = ({ message }) => {
+type MessageProps = {
+    message: Message;
+}
+
+const MessageItem = ({ message }: MessageProps) => {
     return (
         <div
             className={
@@ -31,4 +36,4 @@ const Message = ({ message }) => {
     );
 };
 
-export default Message;
+export default MessageItem;
