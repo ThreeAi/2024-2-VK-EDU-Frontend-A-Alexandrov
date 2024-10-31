@@ -1,7 +1,7 @@
 import "./App.css";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import { AppRoute } from "./utils/const";
-import { PageContext, pages } from "./utils/PageContext";
+import { PageContext, pages } from "./context/PageContext";
 import PageChat from "./pages/PageChat";
 import PageChats from "./pages/PageChats";
 import PageEditProfile from "./pages/PageEditProfile";

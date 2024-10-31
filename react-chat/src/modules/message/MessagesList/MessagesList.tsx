@@ -1,7 +1,7 @@
 import {useRef, useEffect} from "react";
 import "./MessagesList.scss";
 import MessageItem from "../MessageItem";
-import { Message } from "../../utils/const";
+import { Message } from "../../../utils/const";
 
 type ChatBodyProps = {
 	messages: Message[]

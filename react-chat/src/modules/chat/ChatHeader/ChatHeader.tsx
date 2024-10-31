@@ -2,10 +2,10 @@ import "./ChatHeader.scss";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIosNew";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import avatar from "../../assets/img/avatar.jpg";
+import avatar from "../../../assets/img/avatar.jpg";
 import { Link } from "react-router-dom";
-import { AppRoute } from "../../utils/const";
-import HeaderLayout from "../HeaderLayout";
+import { AppRoute } from "../../../utils/const";
+import HeaderLayout from "../../../layouts/HeaderLayout";
 
 const ChatHeader = (): JSX.Element => {
 	return (

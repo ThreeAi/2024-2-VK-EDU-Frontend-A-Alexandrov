@@ -1,10 +1,10 @@
-import "./EditProfileHeader.scss";
+import "./ProfileHeader.scss";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIosNew";
-import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';import HeaderLayout from "../HeaderLayout";
+import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';import HeaderLayout from "../../../layouts/HeaderLayout";
 import { Link } from "react-router-dom";
-import { AppRoute } from "../../utils/const";
+import { AppRoute } from "../../../utils/const";
 
-const EditProfileHeader = () => {
+const ProfileHeader = () => {
 	return (
 		<HeaderLayout>
 			<Link to={AppRoute.Chats}>
@@ -19,4 +19,4 @@ const EditProfileHeader = () => {
 	);
 };
 
-export default EditProfileHeader;
+export default ProfileHeader;

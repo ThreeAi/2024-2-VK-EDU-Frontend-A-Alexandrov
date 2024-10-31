@@ -1,4 +1,4 @@
-import { Chat } from "../../utils/const";
+import { Chat } from "../../../utils/const";
 import ChatItem from "../ChatItem";
 import './ChatsList.scss';
 
@@ -7,7 +7,7 @@ type ChatsListProps = {
 }
 
 const ChatsList = ({ chats }: ChatsListProps) => {
-    let len = chats.length;
+    const len = chats.length;
 	return (
 		<div className="chat-list">
 			{chats.map((chat, index) => (

@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
-import ChatsHeader from "../../components/ChatsHeader";
-import ChatsList from "../../modules/ChatsList";
+import ChatsHeader from "../../modules/chat/ChatsHeader";
+import ChatsList from "../../modules/chat/ChatsList";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import "./PageChats.scss";
 import avatar from '../../assets/img/avatar.jpg';
-import { PageContext } from "../../utils/PageContext";
-import ChatLayout from "../../components/ChatLayout";
+import { PageContext } from "../../context/PageContext";
+import ChatLayout from "../../layouts/ChatLayout";
 
 const PageChats = () => {
 

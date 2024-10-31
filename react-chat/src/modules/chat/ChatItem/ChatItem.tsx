@@ -1,10 +1,10 @@
 import { useRef, useEffect } from "react";
-import avatar from "../../assets/img/avatar.jpg";
+import avatar from "../../../assets/img/avatar.jpg";
 import DoneAllOutlinedIcon from "@mui/icons-material/DoneAllOutlined";
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined";
 import AlternateEmailOutlinedIcon from "@mui/icons-material/AlternateEmailOutlined";
 import "./ChatItem.scss";
-import { AppRoute, Chat } from "../../utils/const";
+import { AppRoute, Chat } from "../../../utils/const";
 import { Link } from "react-router-dom";
 
 type ChatItemProps = {

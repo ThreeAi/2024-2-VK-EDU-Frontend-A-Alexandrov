@@ -1,4 +1,4 @@
-import { Message } from "../../utils/const";
+import { Message } from "../../../utils/const";
 import "./MessageItem.scss";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 

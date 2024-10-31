@@ -1,6 +1,6 @@
 import { useState } from "react";
-import ChatLayout from "../../components/ChatLayout";
-import EditProfileHeader from "../../components/EditProfileHeader";
+import ChatLayout from "../../layouts/ChatLayout";
+import ProfileHeader from "../../modules/profile/ProfileHeader";
 import "./PageEditProfile.scss";
 import InputField from "../../components/InputField";
 import EditAvatar from "../../components/EditAvatar";
@@ -18,7 +18,7 @@ const PageEditProfile = () => {
 	};
 	return (
 		<ChatLayout>
-			<EditProfileHeader />
+			<ProfileHeader />
 			<div className="profile-form">
 				<EditAvatar/>
 

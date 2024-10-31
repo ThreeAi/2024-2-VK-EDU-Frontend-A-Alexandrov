@@ -1,12 +1,12 @@
 import { useState, useEffect, useContext, FormEvent } from "react";
-import ChatHeader from "../../components/ChatHeader";
-import ChatBody from "../../modules/MessagesList";
-import ChatFooter from "../../modules/ChatFooter";
+import ChatHeader from "../../modules/chat/ChatHeader";
+import ChatBody from "../../modules/message/MessagesList";
+import ChatFooter from "../../modules/chat/ChatFooter";
 import "./PageChat.scss";
-import { PageContext } from "../../utils/PageContext";
+import { PageContext } from "../../context/PageContext";
 import { ChatMessages, Message } from "../../utils/const";
 import { useParams } from "react-router-dom";
-import ChatLayout from "../../components/ChatLayout";
+import ChatLayout from "../../layouts/ChatLayout";
 
 const PageChat = () => {
 	const { data } = useContext(PageContext);
@@ -45,7 +45,7 @@ const PageChat = () => {
 
 			localStorage.setItem("chatMessages", JSON.stringify(savedChats));
 		}
-	}, [messages, isInitialized]);
+	}, [chatId, messages, isInitialized]);
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
