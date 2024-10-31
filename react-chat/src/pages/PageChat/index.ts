@@ -1,1 +1,1 @@
-export {default} from "./PageChat";
+export {default} from './PageChat';

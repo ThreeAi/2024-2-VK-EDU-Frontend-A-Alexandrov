@@ -1,7 +1,7 @@
 export enum AppRoute {
-    Chats = "/",
-    Chat = "/chat/:chatId",
-    EditProfile = "/profile/edit",
+    Chats = '/',
+    Chat = '/chat/:chatId',
+    EditProfile = '/profile/edit',
 }
 
 export type Message = {

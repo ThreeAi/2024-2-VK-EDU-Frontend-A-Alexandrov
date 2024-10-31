@@ -6,13 +6,13 @@ type HeaderLayoutProps = {
 }
 
 const HeaderLayout = ({children} : HeaderLayoutProps) => {
-	return (
-		<div className="chats-header">
-			<div className="chat-header-content">
-                {children}
-			</div>
-		</div>
-	);
+  return (
+    <div className="chats-header">
+      <div className="chat-header-content">
+        {children}
+      </div>
+    </div>
+  );
 };
 
 export default HeaderLayout;
