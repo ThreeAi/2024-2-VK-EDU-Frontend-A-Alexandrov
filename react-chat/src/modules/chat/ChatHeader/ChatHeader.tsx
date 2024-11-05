@@ -7,7 +7,11 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../../utils/const';
 import HeaderLayout from '../../../layouts/HeaderLayout';
 
-const ChatHeader = (): JSX.Element => {
+type ChatHeaderProps = {
+  title: string
+}
+
+const ChatHeader = ({title}: ChatHeaderProps) => {
   return (
     <HeaderLayout>
       <Link to={AppRoute.Chats}>
@@ -18,7 +22,7 @@ const ChatHeader = (): JSX.Element => {
       </Link>
       <img alt="Avatar" className="avatar" src={avatar} />
       <div className="chat-user-info">
-        <h3 className="user-name">ThreeAi</h3>
+        <h3 className="user-name">{title}</h3>
         <p className="last-seen">была 2 часа назад</p>
       </div>
       <SearchIcon className="material-symbols-outlined" />

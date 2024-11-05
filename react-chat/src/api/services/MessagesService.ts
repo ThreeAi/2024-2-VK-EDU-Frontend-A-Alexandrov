@@ -16,6 +16,7 @@ export class MessagesService {
      * @throws ApiError
      */
     public static messagesList(
+        id: string,
         search?: string,
         page?: number,
         pageSize?: number,
@@ -32,6 +33,7 @@ export class MessagesService {
                 'search': search,
                 'page': page,
                 'page_size': pageSize,
+                'chat': id,
             },
         });
     }

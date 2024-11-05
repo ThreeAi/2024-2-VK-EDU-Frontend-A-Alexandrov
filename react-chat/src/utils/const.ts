@@ -17,7 +17,7 @@ export type ChatMessages = {
 }
 
 export type Chat = {
-    id: number;
+    id: string;
 	new: boolean;
 	avatar: string;
 	name: string;
