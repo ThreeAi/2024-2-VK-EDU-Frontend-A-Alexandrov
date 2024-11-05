@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import ChatsHeader from '../../modules/chat/ChatsHeader';
 import ChatsList from '../../modules/chat/ChatsList';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -6,8 +6,22 @@ import './PageChats.scss';
 import avatar from '../../assets/img/avatar.jpg';
 import { PageContext } from '../../context/PageContext';
 import ChatLayout from '../../layouts/ChatLayout';
+import { useNavigate } from 'react-router-dom';
+import { AppRoute } from '../../utils/const';
 
 const PageChats = () => {
+
+  const navigate = useNavigate();
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+
+        if (accessToken) {
+            navigate(AppRoute.Chats);
+        } else {
+            navigate(AppRoute.Login);
+        }
+    }, [navigate]);
 
   const { data } = useContext(PageContext);
 

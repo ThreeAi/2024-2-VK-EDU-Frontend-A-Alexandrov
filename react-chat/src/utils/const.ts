@@ -1,5 +1,6 @@
 export enum AppRoute {
     Chats = '/',
+    Login = '/login',
     Chat = '/chat/:chatId',
     EditProfile = '/profile/edit',
 }
