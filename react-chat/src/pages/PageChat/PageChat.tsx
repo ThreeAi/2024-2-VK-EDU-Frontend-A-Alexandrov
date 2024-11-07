@@ -6,7 +6,7 @@ import './PageChat.scss';
 import { PageContext } from '../../context/PageContext';
 import { useParams } from 'react-router-dom';
 import ChatLayout from '../../layouts/ChatLayout';
-import { ChatService, MessagesService, OpenAPI, Message, MessageCreate, MessageService} from '../../api';
+import { ChatService, MessagesService, OpenAPI, Message, MessageCreate, MessageService, CentrifugoService} from '../../api';
 import { parseTime } from '../../utils/functions';
 import { Centrifuge, Subscription } from 'centrifuge';
 
@@ -17,71 +17,45 @@ const PageChat = () => {
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [chatTitle, setChatTitle] = useState<string>();
-  // const [isInitialized, setIsInitialized] = useState(false);
-  // const [centrifuge, setCentrifuge] = useState<Centrifuge | null>(null);
-  // const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [centrifuge, setCentrifuge] = useState<Centrifuge | null>(null);
 
-  // const  connect  =  ()  => {
-  //   const  centrifuge  =  new  Centrifuge('ws://localhost:8080/api/connection/websocket/', {
-  //     getToken: (ctx)  =>
-  //     new  Promise((resolve, reject)  =>
-  //     fetch('http://localhost:8080/api/centrifugo/connect/', {
-  //     body: JSON.stringify(ctx),
-  //     method: 'POST',
-  //     headers: { 'Authorization': `Bearer ${OpenAPI.TOKEN}` }
-  //   })
-  //     .then((res)  => res.json())
-  //     .then((data)  =>  resolve(data.token))
-  //     .catch((err)  =>  reject(err))
-  //     )
-  //   });
+  const  connect  =  async ()  => {
+    const tokenCreate = (await CentrifugoService.centrifugoConnectCreate()).token;
+    const  centrifuge  =  new  Centrifuge('ws://localhost:8080/connection/websocket/', {
+      token: tokenCreate
+    });
 
-  //   const  subscription  = centrifuge.newSubscription(localStorage.getItem('userId') || '', {
-  //     getToken: (ctx)  =>
-  //     new  Promise((resolve, reject)  =>
-  //     fetch('http://localhost:8080/api/centrifugo/subscribe/', {
-  //     body: JSON.stringify(ctx),
-  //     method: 'POST',
-  //     headers: { 'Authorization': `Bearer ${OpenAPI.TOKEN}` },
-  //   })
-  //     .then((res)  => res.json())
-  //     .then((data)  =>  resolve(data.token))
-  //     .catch((err)  =>  reject(err))
-  //     )
-  //   });
+    const tokenSubscription = (await CentrifugoService.centrifugoSubscribeCreate()).token
+    const  subscription  = centrifuge.newSubscription(localStorage.getItem('userId') || '', {
+      token: tokenSubscription
+    });
   
-  //   subscription.on('publication', function(ctx) {
-  //     console.log(ctx.data);
-  //     const { event, message } = ctx.data;
-  //     handleServerEvent(event, message);
-  //   });
+    subscription.on('publication', (ctx) => {
+      const newMessage: Message = ctx.data.message;
+      MessageService.messageRead(newMessage.id || '')
+      .then((resp) => {
+        setMessages((prevMessages) => {
+          if (!prevMessages.find((mess) => mess.id === resp.id)) {
+            return [...prevMessages, resp];
+          }
+          return prevMessages;
+        })
+      })
+      .catch(() => console.log('Faild fetch message'));
+    });
   
-  //   subscription.subscribe();
-  //   centrifuge.connect();
-  //   setCentrifuge(centrifuge);
-  //   setSubscription(subscription);
-  // }
+    subscription.subscribe();
+    centrifuge.connect();
+    setCentrifuge(centrifuge);
+  }
 
-  // const handleServerEvent = (event: string, message: MessageApi) => {
-  //   switch (event) {
-  //     case 'create':
-  //       setMessages((prevMessages) => [...prevMessages, transformMessage(message)]);
-  //       break;
-  //     default:
-  //       console.warn(`Unknown event type: ${event}`);
-  //   }
-  // };
-
-  // const transformMessage = (message: MessageApi) => ({
-  //   id: message.id,
-  //   sended: message.sender.id === localStorage.getItem('userId'),
-  //   text: message.text || '',
-  //   time: parseTime(message.updated_at || '') || '',
-  // });
-
-  // useEffect(() => {
-  //   connect();
-  // }, []);
+  useEffect(() => {
+    connect();
+    return () => {
+      if(centrifuge)
+        centrifuge?.disconnect();
+    };
+  }, [chatId]);
 
   useEffect(() => {
     if (!chatId) return;
@@ -106,11 +80,7 @@ const PageChat = () => {
         chat: chatId || '', 
       };
   
-      const createdMessage = await MessagesService.messagesCreate(messageToSend);
-  
-      const fullMessage = await MessageService.messageRead(createdMessage.id || '');
-  
-      setMessages((prevMessages) => [...prevMessages, fullMessage]);
+      await MessagesService.messagesCreate(messageToSend);
   
       setMessageInput('');
       const form = event.target as HTMLFormElement;

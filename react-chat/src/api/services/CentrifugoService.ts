@@ -5,12 +5,13 @@
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+import { Token } from '../models/Token';
 export class CentrifugoService {
     /**
      * @returns any
      * @throws ApiError
      */
-    public static centrifugoConnectCreate(): CancelablePromise<any> {
+    public static centrifugoConnectCreate(): CancelablePromise<Token> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/centrifugo/connect/',
@@ -20,7 +21,7 @@ export class CentrifugoService {
      * @returns any
      * @throws ApiError
      */
-    public static centrifugoSubscribeCreate(): CancelablePromise<any> {
+    public static centrifugoSubscribeCreate(): CancelablePromise<Token> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/centrifugo/subscribe/',
