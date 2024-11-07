@@ -321,12 +321,13 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                             
                             response = await sendRequest(config, options, url, body, formData, headers, onCancel);
                         } else {
-                            window.location.href = '/#/login'
+                            window.location.href = '2024-2-VK-EDU-Frontend-A-Alexandrov/#/login'
                             throw new Error('Token refresh failed');
                         }
                     } catch (error) {
                         console.error('Failed to refresh token:', error);
-                        window.location.href = '/#/login';
+                        window.location.href = '2024-2-VK-EDU-Frontend-A-Alexandrov/#/login';
+                        //TODO: fix hardcode redirect
 
                         reject(error);
                         return;
