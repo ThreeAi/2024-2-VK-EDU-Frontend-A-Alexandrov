@@ -22,29 +22,29 @@ const PageChat = () => {
   const [chatTitle, setChatTitle] = useState<string>();
   const [centrifuge, setCentrifuge] = useState<Centrifuge | null>(null);
 
-  const  connect  =  async ()  => {
+  const connect = async () => {
     const tokenCreate = (await CentrifugoService.centrifugoConnectCreate()).token;
-    const  centrifuge  =  new  Centrifuge(wspath, {
+    const centrifuge = new Centrifuge(wspath, {
       token: tokenCreate
     });
 
     const tokenSubscription = (await CentrifugoService.centrifugoSubscribeCreate()).token
-    const  subscription  = centrifuge.newSubscription(localStorage.getItem('userId') || '', {
+    const subscription = centrifuge.newSubscription(localStorage.getItem('userId') || '', {
       token: tokenSubscription
     });
   
     subscription.on('publication', (ctx) => {
       const newMessage: Message = ctx.data.message;
       MessageService.messageRead(newMessage.id || '')
-      .then((resp) => {
-        setMessages((prevMessages) => {
-          if (!prevMessages.find((mess) => mess.id === resp.id)) {
-            return [...prevMessages, resp];
-          }
-          return prevMessages;
+        .then((resp) => {
+          setMessages((prevMessages) => {
+            if (!prevMessages.find((mess) => mess.id === resp.id)) {
+              return [...prevMessages, resp];
+            }
+            return prevMessages;
+          })
         })
-      })
-      .catch(() => console.log('Faild fetch message'));
+        .catch(() => console.log('Faild fetch message'));
     });
   
     subscription.subscribe();
@@ -55,7 +55,7 @@ const PageChat = () => {
   useEffect(() => {
     connect();
     return () => {
-      if(centrifuge)
+      if (centrifuge)
         centrifuge?.disconnect();
     };
   }, [chatId]);
@@ -64,12 +64,12 @@ const PageChat = () => {
     if (!chatId) return;
     ChatService.chatRead(chatId)
       .then(fetchedChat => setChatTitle(fetchedChat.title))
-      .catch(error => console.error("Failed to fetch chat title:", error));
+      .catch(error => console.error('Failed to fetch chat title:', error));
 
     setIsMessagesLoading(true);
     MessagesService.messagesList(chatId)
       .then(response => setMessages(response.results.reverse()))
-      .catch(error => console.error("Failed to fetch messages:", error))
+      .catch(error => console.error('Failed to fetch messages:', error))
       .finally(() => setIsMessagesLoading(false));
 
   }, [chatId]);
@@ -93,7 +93,7 @@ const PageChat = () => {
         textarea.rows = 1;
       }
     } catch (error) {
-      console.error("Faild send message:", error);
+      console.error('Faild send message:', error);
     }
   };
 
