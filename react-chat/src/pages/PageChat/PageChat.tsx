@@ -1,27 +1,30 @@
-import { useState, useEffect, useContext, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import ChatHeader from '../../modules/chat/ChatHeader';
 import ChatBody from '../../modules/message/MessagesList';
 import ChatFooter from '../../modules/chat/ChatFooter';
 import './PageChat.scss';
-import { PageContext } from '../../context/PageContext';
 import { useParams } from 'react-router-dom';
 import ChatLayout from '../../layouts/ChatLayout';
-import { ChatService, MessagesService, OpenAPI, Message, MessageCreate, MessageService, CentrifugoService} from '../../api';
-import { parseTime } from '../../utils/functions';
-import { Centrifuge, Subscription } from 'centrifuge';
+import { ChatService, MessagesService, Message, MessageCreate, MessageService, CentrifugoService} from '../../api';
+import { Centrifuge } from 'centrifuge';
+import Spinner from '../../components/Spinner';
 
 const PageChat = () => {
   // const { data } = useContext(PageContext);
   const { chatId } = useParams(); 
 
+  // const wspath = 'ws://localhost:8080/connection/websocket/';
+  const wspath = 'wss://vkedu-fullstack-div2.ru/connection/websocket/';
+
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isMessagesLoading, setIsMessagesLoading] = useState<boolean>(false);
   const [chatTitle, setChatTitle] = useState<string>();
   const [centrifuge, setCentrifuge] = useState<Centrifuge | null>(null);
 
   const  connect  =  async ()  => {
     const tokenCreate = (await CentrifugoService.centrifugoConnectCreate()).token;
-    const  centrifuge  =  new  Centrifuge('ws://localhost:8080/connection/websocket/', {
+    const  centrifuge  =  new  Centrifuge(wspath, {
       token: tokenCreate
     });
 
@@ -63,11 +66,12 @@ const PageChat = () => {
       .then(fetchedChat => setChatTitle(fetchedChat.title))
       .catch(error => console.error("Failed to fetch chat title:", error));
 
+    setIsMessagesLoading(true);
     MessagesService.messagesList(chatId)
-      .then(response => {
-        setMessages(response.results.reverse());
-      })
-      .catch(error => console.error("Failed to fetch messages:", error));
+      .then(response => setMessages(response.results.reverse()))
+      .catch(error => console.error("Failed to fetch messages:", error))
+      .finally(() => setIsMessagesLoading(false));
+
   }, [chatId]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -96,7 +100,7 @@ const PageChat = () => {
   return (
     <ChatLayout>
       <ChatHeader title={chatTitle || ''} />
-      <ChatBody messages={messages} />
+      {isMessagesLoading ? <Spinner/> : <ChatBody messages={messages} />}
       <ChatFooter
         messageInput={messageInput}
         handleSubmit={handleSubmit}

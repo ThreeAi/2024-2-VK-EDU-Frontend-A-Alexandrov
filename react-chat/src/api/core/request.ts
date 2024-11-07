@@ -2,12 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import { AuthService } from '../services/AuthService';
 import { ApiError } from './ApiError';
 import type { ApiRequestOptions } from './ApiRequestOptions';
 import type { ApiResult } from './ApiResult';
 import { CancelablePromise } from './CancelablePromise';
 import type { OnCancel } from './CancelablePromise';
-import type { OpenAPIConfig } from './OpenAPI';
+import { OpenAPI, type OpenAPIConfig } from './OpenAPI';
+import { parseJwt } from '../../utils/functions';
 
 export const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -299,7 +301,40 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
             const headers = await getHeaders(config, options);
 
             if (!onCancel.isCancelled) {
-                const response = await sendRequest(config, options, url, body, formData, headers, onCancel);
+                let response = await sendRequest(config, options, url, body, formData, headers, onCancel);
+
+                if (response.status === 401 && !localStorage.getItem('attemptRefresh')) {
+                    localStorage.setItem('attemptRefresh', "yes");
+                    
+                    const refreshToken = localStorage.getItem('refreshToken') || '';
+                    
+                    try {
+                        const refreshedToken = await AuthService.authRefreshCreate({ refresh: refreshToken })
+                        
+                        if (refreshedToken.access) {
+                            localStorage.setItem('accessToken', refreshedToken.access);
+                            localStorage.setItem('refreshToken', refreshedToken.refresh);
+                            localStorage.setItem('userId', parseJwt(refreshedToken.access).user_id);
+                            OpenAPI['TOKEN'] = refreshedToken.access;
+
+                            headers.set('Authorization', `Bearer ${refreshedToken.access}`);
+                            
+                            response = await sendRequest(config, options, url, body, formData, headers, onCancel);
+                        } else {
+                            window.location.href = '/#/login'
+                            throw new Error('Token refresh failed');
+                        }
+                    } catch (error) {
+                        console.error('Failed to refresh token:', error);
+                        window.location.href = '/#/login';
+
+                        reject(error);
+                        return;
+                    } finally {
+                        localStorage.removeItem('attemptRefresh');
+                    }
+                }
+
                 const responseBody = await getResponseBody(response);
                 const responseHeader = getResponseHeader(response, options.responseHeader);
 

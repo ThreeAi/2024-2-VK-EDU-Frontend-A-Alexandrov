@@ -1,7 +1,7 @@
 import { Message } from '../../../api';
 import { parseTime } from '../../../utils/functions';
 import './MessageItem.scss';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
+// import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 type MessageProps = {
     message: Message;

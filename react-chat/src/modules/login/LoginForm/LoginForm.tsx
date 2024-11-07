@@ -1,8 +1,9 @@
 import { MouseEventHandler, useState } from "react";
 import InputField from "../../../components/InputField";
-import { ApiError, AuthService, OpenAPI, TokenObtainPair, UsersService } from "../../../api";
+import { ApiError, AuthService, OpenAPI, TokenObtainPair } from "../../../api";
 import { useNavigate } from "react-router-dom";
 import { AppRoute } from "../../../utils/const";
+import { parseJwt } from "../../../utils/functions";
 
 type LoginFormProps = {
 	onChange: MouseEventHandler<HTMLButtonElement>;
@@ -27,16 +28,11 @@ const LoginForm = ({onChange}: LoginFormProps) => {
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault(); 
 
-		const setUserId = async (username: string) => {
-			const response = await UsersService.usersList(username);
-			localStorage.setItem('userId', response.results[0].id || '')
-		}
-
 		try {
 			const response = await AuthService.authCreate(credentials);
 			localStorage.setItem('accessToken', response.access);
             localStorage.setItem('refreshToken', response.refresh);
-			setUserId(credentials.username);
+			localStorage.setItem('userId', parseJwt(response.access).user_id)
 			OpenAPI['TOKEN'] = response.access;
             setError("");
 			navigate(AppRoute.Chats);
