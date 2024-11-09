@@ -5,12 +5,11 @@ import ChatFooter from '../../modules/chat/ChatFooter';
 import './PageChat.scss';
 import { useParams } from 'react-router-dom';
 import ChatLayout from '../../layouts/ChatLayout';
-import { ChatService, MessagesService, Message, MessageCreate, MessageService, CentrifugoService} from '../../api';
-import { Centrifuge } from 'centrifuge';
+import { ChatService, MessagesService, Message, MessageCreate, CentrifugoService} from '../../api';
+import { Centrifuge, Subscription } from 'centrifuge';
 import Spinner from '../../components/Spinner';
 
 const PageChat = () => {
-  // const { data } = useContext(PageContext);
   const { chatId } = useParams(); 
 
   // const wspath = 'ws://localhost:8080/connection/websocket/';
@@ -21,6 +20,7 @@ const PageChat = () => {
   const [isMessagesLoading, setIsMessagesLoading] = useState<boolean>(false);
   const [chatTitle, setChatTitle] = useState<string>();
   const [centrifuge, setCentrifuge] = useState<Centrifuge | null>(null);
+  const [subscription, setSubscription] = useState<Subscription | null>(null);
 
   const connect = async () => {
     const tokenCreate = (await CentrifugoService.centrifugoConnectCreate()).token;
@@ -35,20 +35,17 @@ const PageChat = () => {
   
     subscription.on('publication', (ctx) => {
       const newMessage: Message = ctx.data.message;
-      MessageService.messageRead(newMessage.id || '')
-        .then((resp) => {
-          setMessages((prevMessages) => {
-            if (!prevMessages.find((mess) => mess.id === resp.id)) {
-              return [...prevMessages, resp];
-            }
-            return prevMessages;
-          })
-        })
-        .catch(() => console.log('Faild fetch message'));
+      setMessages((prevMessages) => {
+        if (!prevMessages.find((mess) => mess.id === newMessage.id)) {
+          return [...prevMessages, newMessage];
+        }
+        return prevMessages;
+      })
     });
   
     subscription.subscribe();
     centrifuge.connect();
+    setSubscription(subscription);
     setCentrifuge(centrifuge);
   }
 
@@ -56,7 +53,11 @@ const PageChat = () => {
     connect();
     return () => {
       if (centrifuge)
-        centrifuge?.disconnect();
+        centrifuge.disconnect();
+      if (subscription) {
+        subscription.removeAllListeners();
+        subscription.unsubscribe();
+      }
     };
   }, [chatId]);
 

@@ -20,7 +20,7 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-    // BASE: '/api',
+    // BASE: 'http://localhost:8080/api',
     BASE: 'https://vkedu-fullstack-div2.ru/api',
     VERSION: '1',
     WITH_CREDENTIALS: false,

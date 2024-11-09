@@ -5,14 +5,13 @@
 import type { User } from './User';
 export type Chat = {
     readonly id: string;
-    readonly title?: string;
+    title?: string;
     members: Array<User>;
     creator: User;
     readonly avatar?: string;
     readonly created_at?: string;
     readonly updated_at?: string;
     is_private: boolean;
-    //TODO refactor type
     readonly last_message?: {text: string}; 
 };
 

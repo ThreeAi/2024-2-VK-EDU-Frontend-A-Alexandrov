@@ -6,6 +6,7 @@ import type { Chat } from '../models/Chat';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+import { ChatCreate } from '../models/ChatCreate';
 export class ChatsService {
     /**
      * @param search A search term.
@@ -41,7 +42,7 @@ export class ChatsService {
      */
     public static chatsCreate(
         data: Chat,
-    ): CancelablePromise<Chat> {
+    ): CancelablePromise<ChatCreate> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/chats/',

@@ -16,6 +16,7 @@ type ChatItemProps = {
 const ChatItem = ({chat}: ChatItemProps) => {
   const chatItemRef = useRef<HTMLDivElement | null>(null);
 
+  //это анимация появления чата в последствии думаю пригодиться
   // useEffect(() => {
   //   if (chat.new) {
   //     const newChatElement = chatItemRef.current;
