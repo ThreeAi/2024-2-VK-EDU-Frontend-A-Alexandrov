@@ -1,11 +1,13 @@
-import { useRef, useEffect } from 'react';
+import { useRef/* , useEffect */ } from 'react';
 import avatar from '../../../assets/img/avatar.jpg';
-import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined';
+// import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined';
+// import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+// import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined';
 import './ChatItem.scss';
-import { AppRoute, Chat } from '../../../utils/const';
+import { AppRoute } from '../../../utils/const';
 import { Link } from 'react-router-dom';
+import { Chat } from '../../../api';
+import { parseTime } from '../../../utils/functions';
 
 type ChatItemProps = {
 	chat: Chat;
@@ -14,32 +16,33 @@ type ChatItemProps = {
 const ChatItem = ({chat}: ChatItemProps) => {
   const chatItemRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (chat.new) {
-      const newChatElement = chatItemRef.current;
-      if (newChatElement) {
-        newChatElement.classList.add('chat-item-animation');
+  //это анимация появления чата в последствии думаю пригодиться
+  // useEffect(() => {
+  //   if (chat.new) {
+  //     const newChatElement = chatItemRef.current;
+  //     if (newChatElement) {
+  //       newChatElement.classList.add('chat-item-animation');
 
-        setTimeout(() => {
-          newChatElement.classList.add('appear');
-        }, 50);
-      }
-    }
-  }, [chat.new]);
+  //       setTimeout(() => {
+  //         newChatElement.classList.add('appear');
+  //       }, 50);
+  //     }
+  //   }
+  // }, [chat.new]);
 
   return (
-    <Link to={AppRoute.Chat.replace(':chatId', chat.id.toString())}>
+    <Link to={AppRoute.Chat.replace(':chatId', (chat.id || '').toString())}>
       <div ref={chatItemRef} className="chat-item">
         <div className="avatar-conteiner">
           <img className="avatar" src={avatar} alt="avatar" />
         </div>
         <div className="chat-message">
-          <span className="chat-name">{chat.name}</span>
-          <p>{chat.message}</p>
+          <span className="chat-name">{chat.title}</span>
+          <p>{chat.last_message?.text}</p>
         </div>
         <div className="chat-details">
-          <span className="chat-time">{chat.time}</span>
-          {chat.unread ? (
+          <span className="chat-time">{parseTime(chat.updated_at || '')}</span>
+          {/* {chat.unread ? (
             <span
               className={
                 chat.tag ? 'taged-unread-count' : 'unread-count'
@@ -56,7 +59,7 @@ const ChatItem = ({chat}: ChatItemProps) => {
             <DoneAllOutlinedIcon className="material-symbols-outlined chat-symbol" />
           ) : (
             <CheckOutlinedIcon className="material-symbols-outlined chat-symbol" />
-          )}
+          )} */}
         </div>
       </div>
     </Link>

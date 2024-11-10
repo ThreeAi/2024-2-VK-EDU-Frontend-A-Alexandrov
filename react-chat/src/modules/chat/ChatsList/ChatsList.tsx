@@ -1,4 +1,4 @@
-import { Chat } from '../../../utils/const';
+import { Chat } from '../../../api';
 import ChatItem from '../ChatItem';
 import './ChatsList.scss';
 
@@ -7,11 +7,10 @@ type ChatsListProps = {
 }
 
 const ChatsList = ({ chats }: ChatsListProps) => {
-  const len = chats.length;
   return (
     <div className="chat-list">
-      {chats.map((chat, index) => (
-        <ChatItem key={len - index} chat={chat} />
+      {chats.map((chat) => (
+        <ChatItem key={chat.id} chat={chat} />
       ))}
     </div>
   );

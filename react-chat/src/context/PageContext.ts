@@ -7,7 +7,7 @@ export const pages = {
     data: {
       chats: [
         {
-          id: 1,
+          id: '1',
           new: false,
           avatar: avatar,
           name: 'Дженнифер Эшли',
@@ -18,7 +18,7 @@ export const pages = {
           read: true,
         },
         {
-          id: 2,
+          id: '2',
           new: false,
           avatar: avatar,
           name: 'Общество целых бокалов',
@@ -29,7 +29,7 @@ export const pages = {
           read: false,
         },
         {
-          id: 3,
+          id: '3',
           new: false,
           avatar: avatar,
           name: 'Антон Иванов',
@@ -40,7 +40,7 @@ export const pages = {
           read: true,
         },
         {
-          id: 4,
+          id: '4',
           new: false,
           avatar: avatar,
           name: 'Серёга (должен 2000Р)',
@@ -51,7 +51,7 @@ export const pages = {
           read: false,
         },
         {
-          id: 5,
+          id: '5',
           new: false,
           avatar: avatar,
           name: 'Общество разбитых бокалов',
@@ -62,7 +62,7 @@ export const pages = {
           read: true,
         },
         {
-          id: 6,
+          id: '6',
           new: false,
           avatar: avatar,
           name: 'Сэм с Нижнего',
@@ -73,7 +73,7 @@ export const pages = {
           read: false,
         },
         {
-          id: 7,
+          id: '7',
           new: false,
           avatar: avatar,
           name: 'Айрат работа',
@@ -84,7 +84,7 @@ export const pages = {
           read: true,
         },
         {
-          id: 8,
+          id: '8',
           new: false,
           avatar: avatar,
           name: 'Кеша армия',
