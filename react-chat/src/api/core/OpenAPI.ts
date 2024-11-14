@@ -3,6 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
+const apiUrl: string = import.meta.env.VITE_API_URL || '1';
+console.log(apiUrl);
 
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 type Headers = Record<string, string>;
@@ -20,8 +22,7 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-    // BASE: 'http://localhost:8080/api',
-    BASE: 'https://vkedu-fullstack-div2.ru/api',
+    BASE: `${apiUrl}`,
     VERSION: '1',
     WITH_CREDENTIALS: false,
     CREDENTIALS: 'include',

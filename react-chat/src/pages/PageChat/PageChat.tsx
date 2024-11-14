@@ -8,12 +8,12 @@ import ChatLayout from '../../layouts/ChatLayout';
 import { ChatService, MessagesService, Message, MessageCreate, CentrifugoService} from '../../api';
 import { Centrifuge, Subscription } from 'centrifuge';
 import Spinner from '../../components/Spinner';
+const wsUrl = import.meta.env.VITE_WS_URL || '';
 
 const PageChat = () => {
   const { chatId } = useParams(); 
 
-  // const wspath = 'ws://localhost:8080/connection/websocket/';
-  const wspath = 'wss://vkedu-fullstack-div2.ru/connection/websocket/';
+  const wspath = wsUrl;
 
   const [messageInput, setMessageInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);

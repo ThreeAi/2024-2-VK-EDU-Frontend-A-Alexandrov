@@ -1,5 +1,5 @@
 .message {
-    color: black;
+	color: black;
 	margin-bottom: 15px;
 	display: flex;
 	flex-direction: column;
@@ -51,7 +51,7 @@
 .message-received {
 	align-items: flex-end;
 	background-color: #f0f0f0;
-  	border-radius: 10px 10px 10px 2px;
+	border-radius: 10px 10px 10px 2px;
 }
 
 .message-send-container {
@@ -66,16 +66,16 @@
 }
 
 .timestamp {
-    display: flex;         
-    align-items: center;
+	display: flex;
+	align-items: center;
 	font-size: 11px;
 	color: gray;
 	align-self: flex-end;
-    margin: 0;
+	margin: 0;
 }
 
 .timestamp-icon {
-    margin-left: 5px;
+	margin-left: 5px;
 	vertical-align: middle;
 	color: #8c1af6;
 }
