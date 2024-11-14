@@ -10,6 +10,7 @@ import { CancelablePromise } from './CancelablePromise';
 import type { OnCancel } from './CancelablePromise';
 import { OpenAPI, type OpenAPIConfig } from './OpenAPI';
 import { parseJwt } from '../../utils/functions';
+import { AppRoute } from '../../utils/const';
 
 export const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -321,13 +322,12 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
                             
                             response = await sendRequest(config, options, url, body, formData, headers, onCancel);
                         } else {
-                            window.location.href = '#/login'
+                            window.location.href = `#${AppRoute.Login}`
                             throw new Error('Token refresh failed');
                         }
                     } catch (error) {
                         console.error('Failed to refresh token:', error);
-                        window.location.href = '#/login';
-                        //TODO: fix hardcode redirect
+                        window.location.href = `#${AppRoute.Login}`;
 
                         reject(error);
                         return;

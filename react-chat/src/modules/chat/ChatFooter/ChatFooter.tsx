@@ -1,14 +1,21 @@
-import React, { ChangeEvent, FormEvent, KeyboardEvent } from 'react';
+import React, { ChangeEvent, FormEvent, KeyboardEvent, useContext, useState } from 'react';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import './ChatFooter.scss';
+import Modal from '../../../components/Modal';
+import { MessageInputContext } from '../../../contexts/MessageInputContext';
 
 interface ChatFooterProps {
-    messageInput: string;
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
-    setMessageInput: (value: string) => void;
 }
 
-const ChatFooter = ({ messageInput, handleSubmit, setMessageInput } : ChatFooterProps) => {
+const ChatFooter = ({ handleSubmit } : ChatFooterProps) => {
+
+  const { messageInput, setMessageInput } = useContext(MessageInputContext);
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   const handleKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.keyCode === 13 && !event.shiftKey) { 
@@ -32,7 +39,7 @@ const ChatFooter = ({ messageInput, handleSubmit, setMessageInput } : ChatFooter
       textarea.style.overflowY = 'auto';
     }
 
-    setMessageInput(event.target.value);
+    setMessageInput({...messageInput, text: event.target.value});
   };
 
   return (
@@ -43,12 +50,15 @@ const ChatFooter = ({ messageInput, handleSubmit, setMessageInput } : ChatFooter
           wrap="soft"
           className="message-input"
           placeholder="Сообщение"
-          value={messageInput}
+          value={messageInput.text ?? ''}
           onChange={handleInputChange}
           onKeyDown={handleKeyPress}
         ></textarea>
       </form>
-      <AttachmentIcon className="material-symbols-outlined"/>
+      <AttachmentIcon onClick={openModal} className="material-symbols-outlined"/>
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        Перетащите сюда файл
+      </Modal>
     </div>
   );
 };

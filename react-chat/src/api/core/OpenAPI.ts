@@ -3,8 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
-const apiUrl: string = import.meta.env.VITE_API_URL || '1';
-console.log(apiUrl);
+const apiUrl: string = import.meta.env.VITE_API_URL;
 
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 type Headers = Record<string, string>;

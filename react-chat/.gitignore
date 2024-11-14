@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+react-chat/tsconfig.app.tsbuildinfo
+react-chat/tsconfig.node.tsbuildinfo
