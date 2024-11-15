@@ -12,6 +12,16 @@
 .form {
 	display: flex;
 	flex-grow: 1;
+	align-items: start;
+}
+
+.files {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.file {
+	margin-left: 8px;
 }
 
 .message-input {
@@ -29,4 +39,8 @@
 
 textarea:focus {
 	outline: none;
+}
+
+.label-for-file {
+	display: flex;
 }

@@ -9,7 +9,7 @@ export type Message = {
     readonly voice?: File;
     sender: User;
     readonly chat?: string;
-    files: Array<File>;
+    files: Array<File | {item: string}>;
     readonly updated_at?: string | null;
     readonly created_at?: string;
 };

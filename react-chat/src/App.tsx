@@ -53,7 +53,7 @@ function App () {
   }, []);
   
   return (
-    <CentrifugeContext.Provider value={{centrifuge: centrifuge, subscription: subscription, newMessage: newMessage}}>
+    <CentrifugeContext.Provider value={{centrifuge: centrifuge, subscription: subscription, newMessage: newMessage, setNewMessage: setNewMessage}}>
       <HashRouter>
         <Routes>
           <Route path={AppRoute.Login} element={<PageLogin />} />

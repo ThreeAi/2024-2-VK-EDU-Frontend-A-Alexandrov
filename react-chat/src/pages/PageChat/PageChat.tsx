@@ -10,25 +10,32 @@ import Spinner from '../../components/Spinner';
 import { MessageInput } from '../../types/MessageInput';
 import { MessageInputContext } from '../../contexts/MessageInputContext';
 import { CentrifugeContext } from '../../contexts/CentrifugoContext';
+import { notifyMe } from '../../utils/functions';
 
 const PageChat = () => {
   const { chatId } = useParams(); 
 
-  const { newMessage } = useContext(CentrifugeContext);
+  const { newMessage, setNewMessage } = useContext(CentrifugeContext);
 
   const [messageInput, setMessageInput] = useState<MessageInput>({text: '', files: []});
   const [messages, setMessages] = useState<Message[]>([]);
   const [isMessagesLoading, setIsMessagesLoading] = useState<boolean>(false);
   const [chatTitle, setChatTitle] = useState<string>();
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     setMessages((prevMessages) => {
       if (newMessage && newMessage.chat == chatId && !prevMessages.find((mess) => mess.id === newMessage.id)) {
         return [...prevMessages, newMessage];
       }
+      else if (newMessage && newMessage.chat != chatId) {
+        notifyMe({title: newMessage?.sender.first_name || 'user', message: newMessage?.text || 'files'})
+      }
+      setNewMessage?.(null);
       return prevMessages;
     })
-  }, [chatId, newMessage]);
+    return () => setNewMessage?.(null);
+  }, [chatId, newMessage, setNewMessage]);
 
   useEffect(() => {
     if (!chatId) return;
@@ -47,27 +54,35 @@ const PageChat = () => {
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.stopPropagation();
-
+    setIsDragging(false);
     const files = Array.from(event.dataTransfer.files);
+
+    const imageFiles = files.filter((file) => file.type.startsWith('image/'));
+
     setMessageInput((prevInput) => ({
       ...prevInput,
-      files: [...prevInput.files, ...files],
+      files: [...prevInput.files, ...imageFiles],
     }));
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!messageInput.text || messageInput.text.trim() === '' && messageInput.files.length === 0) return;
+    if ((!messageInput.text || messageInput.text.trim() === '') && messageInput.files.length === 0) return;
 
     try {
       const messageToSend: MessageCreate = {
-        text: messageInput.text.trim(),
+        text: messageInput.text ? messageInput.text.trim() : undefined,
         chat: chatId || '', 
-        files: messageInput.files.length === 0 ? undefined : messageInput.files,
+        files: messageInput.files.length === 0 ? undefined : (messageInput.files as File[]),
       };
   
       await MessagesService.messagesCreate(messageToSend);
@@ -86,11 +101,12 @@ const PageChat = () => {
   return (
     <ChatLayout>
       <ChatHeader title={chatTitle || ''} />
-      {isMessagesLoading ? <Spinner/> : <ChatBody messages={messages} />}
-      <div className='droparea'
+      <div className={`droparea ${isDragging ? 'dragover' : ''}`}
         onDrop={handleFileDrop}
         onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
       >
+        {isMessagesLoading ? <Spinner/> : <ChatBody messages={messages} />}
         <MessageInputContext.Provider value={{ messageInput, setMessageInput}}>
           <ChatFooter
             handleSubmit={handleSubmit}

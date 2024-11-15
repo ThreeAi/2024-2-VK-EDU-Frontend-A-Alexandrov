@@ -1,7 +1,7 @@
-import React, { ChangeEvent, FormEvent, KeyboardEvent, useContext, useState } from 'react';
+import React, { ChangeEvent, FormEvent, KeyboardEvent, useContext } from 'react';
 import AttachmentIcon from '@mui/icons-material/Attachment';
+import PlaceIcon from '@mui/icons-material/Place';
 import './ChatFooter.scss';
-import Modal from '../../../components/Modal';
 import { MessageInputContext } from '../../../contexts/MessageInputContext';
 
 interface ChatFooterProps {
@@ -12,16 +12,49 @@ const ChatFooter = ({ handleSubmit } : ChatFooterProps) => {
 
   const { messageInput, setMessageInput } = useContext(MessageInputContext);
 
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
-
   const handleKeyPress = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.keyCode === 13 && !event.shiftKey) { 
       event.preventDefault();
       handleSubmit(event as unknown as React.FormEvent<HTMLFormElement>);
     }
+  };
+
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const imageFiles = Array.from(files).filter((file) =>
+        file.type.startsWith('image/')
+      );
+  
+      setMessageInput({
+        ...messageInput, 
+        files: [...messageInput.files, ...imageFiles]
+      });
+    }
+  };
+
+  const handleSendGeolocation = () => {
+    if (!navigator.geolocation) {
+      console.error('Geolocation is not supported by this browser.');
+      return;
+    }
+  
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+  
+        const locationUrl = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+  
+        setMessageInput({
+          ...messageInput,
+          text: locationUrl,
+        });
+      },
+      (error) => {
+        console.error('Error fetching geolocation:', error.message);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -45,6 +78,14 @@ const ChatFooter = ({ handleSubmit } : ChatFooterProps) => {
   return (
     <div className="chat-footer">
       <form className="form" onSubmit={handleSubmit} action="/">
+        <div className='files'>
+          {messageInput.files.map((file, index) => {
+            return (
+              <div key={index} className='file'>{`${(file as File).name}`}</div>
+            );
+          })
+          }
+        </div>
         <textarea
           rows={1}
           wrap="soft"
@@ -54,11 +95,19 @@ const ChatFooter = ({ handleSubmit } : ChatFooterProps) => {
           onChange={handleInputChange}
           onKeyDown={handleKeyPress}
         ></textarea>
+        <input
+          type="file"
+          multiple
+          accept="image/*"
+          onChange={handleFileSelect}
+          style={{ display: 'none' }}
+          id="fileInput"
+        />
       </form>
-      <AttachmentIcon onClick={openModal} className="material-symbols-outlined"/>
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        Перетащите сюда файл
-      </Modal>
+      <PlaceIcon onClick={handleSendGeolocation} className='material-symbols-outlined'/>
+      <label className='label-for-file' htmlFor="fileInput" >
+        <AttachmentIcon className="material-symbols-outlined"/>
+      </label>
     </div>
   );
 };

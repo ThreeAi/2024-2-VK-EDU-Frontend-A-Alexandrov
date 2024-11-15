@@ -7,6 +7,10 @@ type MessageProps = {
     message: Message;
 }
 
+type FileType = {
+  item: string;
+};
+
 const MessageItem = ({ message }: MessageProps) => {
   return (
     <div
@@ -27,12 +31,12 @@ const MessageItem = ({ message }: MessageProps) => {
           <div className="message-images">
             {message.files.map((file, index) => {
               return (
-                  <img
-                    key={index}
-                    src={(file as any).item}
-                    alt="attachment"
-                    className="message-image"
-                  />
+                <img
+                  key={index}
+                  src={(file as FileType).item}
+                  alt="attachment"
+                  className="message-image"
+                />
               );
             })}
           </div>
