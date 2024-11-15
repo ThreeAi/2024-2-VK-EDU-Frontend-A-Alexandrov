@@ -23,14 +23,23 @@ const MessageItem = ({ message }: MessageProps) => {
             : 'message message-received'
         }
       >
+        {message.files && message.files.length > 0 && (
+          <div className="message-images">
+            {message.files.map((file, index) => {
+              return (
+                  <img
+                    key={index}
+                    src={(file as any).item}
+                    alt="attachment"
+                    className="message-image"
+                  />
+              );
+            })}
+          </div>
+        )}
         <div>{message.text}</div>
         <p className="timestamp">
           {parseTime(message.created_at || '')}
-          {/* {message.sended && 
-                    <DoneAllIcon
-                      style={{ fontSize: '15px' }}
-                      className="timestamp-icon"
-                    />} */}
         </p>
       </div>
     </div>

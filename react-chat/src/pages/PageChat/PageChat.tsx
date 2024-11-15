@@ -44,14 +44,30 @@ const PageChat = () => {
 
   }, [chatId]);
 
+  const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const files = Array.from(event.dataTransfer.files);
+    setMessageInput((prevInput) => ({
+      ...prevInput,
+      files: [...prevInput.files, ...files],
+    }));
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!messageInput.text || messageInput.text.trim() === '') return;
+    if (!messageInput.text || messageInput.text.trim() === '' && messageInput.files.length === 0) return;
 
     try {
       const messageToSend: MessageCreate = {
         text: messageInput.text.trim(),
         chat: chatId || '', 
+        files: messageInput.files.length === 0 ? undefined : messageInput.files,
       };
   
       await MessagesService.messagesCreate(messageToSend);
@@ -71,11 +87,16 @@ const PageChat = () => {
     <ChatLayout>
       <ChatHeader title={chatTitle || ''} />
       {isMessagesLoading ? <Spinner/> : <ChatBody messages={messages} />}
-      <MessageInputContext.Provider value={{ messageInput, setMessageInput}}>
-        <ChatFooter
-          handleSubmit={handleSubmit}
-        />
-      </MessageInputContext.Provider>
+      <div className='droparea'
+        onDrop={handleFileDrop}
+        onDragOver={handleDragOver}
+      >
+        <MessageInputContext.Provider value={{ messageInput, setMessageInput}}>
+          <ChatFooter
+            handleSubmit={handleSubmit}
+          />
+        </MessageInputContext.Provider>
+      </div>
     </ChatLayout>
   );
 };

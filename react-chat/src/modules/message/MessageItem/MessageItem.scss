@@ -79,3 +79,16 @@
 	vertical-align: middle;
 	color: #8c1af6;
 }
+
+.message-image {
+	width: 100%;
+	border-radius: 5px;
+}
+
+.message-images {
+	flex-grow: 1;
+	display: flex;
+	width: fit-content;
+	flex-direction: row;
+	flex-wrap: wrap;
+}

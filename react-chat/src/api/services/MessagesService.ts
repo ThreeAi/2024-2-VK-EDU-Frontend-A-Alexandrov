@@ -45,10 +45,13 @@ export class MessagesService {
     public static messagesCreate(
         data: MessageCreate,
     ): CancelablePromise<MessageCreate> {
+        const hasFiles = data.files && data.files.length > 0;
+
         return __request(OpenAPI, {
             method: 'POST',
             url: '/messages/',
-            body: data,
+            formData: hasFiles ? data : undefined,  
+            body: hasFiles ? undefined : data,
         });
     }
 }
