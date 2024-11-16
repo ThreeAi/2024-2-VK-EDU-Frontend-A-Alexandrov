@@ -12,6 +12,13 @@ jobs:
     - name: Install npm deps
       working-directory: ./react-chat
       run: npm i
+    - name: Set environment variables
+      env:
+        VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
+        VITE_API_URL: ${{ secrets.VITE_API_URL }}
+      run: |
+        echo "VITE_WS_URL=$VITE_WS_URL" >> ./react-chat/.env
+        echo "VITE_API_URL=$VITE_API_URL" >> ./react-chat/.env
     - name: Build app
       working-directory: ./react-chat
       run: npm run build
