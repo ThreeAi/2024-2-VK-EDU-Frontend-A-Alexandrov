@@ -18,11 +18,14 @@ const ChatBody = ({ messages } : ChatBodyProps) => {
   }, [messages]);
 
   return (
-    <div className="chat-body" ref={chatBodyRef}>
-      {messages.map(message => (
-        <MessageItem key={message.id} message={message} />
-      ))}
-    </div>
+    <>
+      <div className="space"></div>
+      <div className="chat-body" ref={chatBodyRef}>
+        {messages.map(message => (
+          <MessageItem key={message.id} message={message} />
+        ))}
+      </div>
+    </>
   );
 };
 
