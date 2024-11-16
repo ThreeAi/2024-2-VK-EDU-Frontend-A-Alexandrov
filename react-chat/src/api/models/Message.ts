@@ -6,7 +6,7 @@ import type { User } from './User';
 export type Message = {
     readonly id?: string;
     text?: string | null;
-    readonly voice?: File;
+    readonly voice?: string | Blob;
     sender: User;
     readonly chat?: string;
     files: Array<File | {item: string}>;

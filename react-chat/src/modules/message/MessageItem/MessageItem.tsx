@@ -1,7 +1,6 @@
 import { Message } from '../../../api';
 import { parseTime } from '../../../utils/functions';
 import './MessageItem.scss';
-// import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 type MessageProps = {
     message: Message;
@@ -39,6 +38,14 @@ const MessageItem = ({ message }: MessageProps) => {
                 />
               );
             })}
+          </div>
+        )}
+        {message.voice && (
+          <div className="voice-message">
+            <audio controls style={{display: 'flex'}}>
+              <source src={message.voice as string}/>
+              Your browser does not support the audio element.
+            </audio>
           </div>
         )}
         <div>{message.text}</div>

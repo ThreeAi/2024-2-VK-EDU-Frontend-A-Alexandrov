@@ -10,7 +10,7 @@ import Spinner from '../../components/Spinner';
 import { MessageInput } from '../../types/MessageInput';
 import { MessageInputContext } from '../../contexts/MessageInputContext';
 import { CentrifugeContext } from '../../contexts/CentrifugoContext';
-import { notifyMe } from '../../utils/functions';
+import { blobToFile, notifyMe } from '../../utils/functions';
 
 const PageChat = () => {
   const { chatId } = useParams(); 
@@ -76,14 +76,18 @@ const PageChat = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if ((!messageInput.text || messageInput.text.trim() === '') && messageInput.files.length === 0) return;
+    if ((!messageInput.text || messageInput.text.trim() === '') && messageInput.files.length === 0 && !messageInput.voice) return;
 
     try {
-      const messageToSend: MessageCreate = {
+      const messageToSend: MessageCreate = !messageInput.voice ? {
         text: messageInput.text ? messageInput.text.trim() : undefined,
         chat: chatId || '', 
         files: messageInput.files.length === 0 ? undefined : (messageInput.files as File[]),
-      };
+      } : 
+        {
+          voice: blobToFile(messageInput.voice as Blob, 'voice-message.ogg'),
+          chat: chatId || '',
+        };
   
       await MessagesService.messagesCreate(messageToSend);
   

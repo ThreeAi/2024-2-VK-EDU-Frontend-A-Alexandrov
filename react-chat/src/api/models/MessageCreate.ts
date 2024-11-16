@@ -5,7 +5,7 @@
 export type MessageCreate = {
     readonly id?: string;
     text?: string | null;
-    readonly voice?: string | null;
+    readonly voice?: File | null;
     chat: string;
     files?: Array<File>;
     readonly updated_at?: string | null;

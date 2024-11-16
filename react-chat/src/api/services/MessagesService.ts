@@ -45,7 +45,7 @@ export class MessagesService {
     public static messagesCreate(
         data: MessageCreate,
     ): CancelablePromise<MessageCreate> {
-        const hasFiles = data.files && data.files.length > 0;
+        const hasFiles = data.files && data.files.length > 0 || data.voice;
 
         return __request(OpenAPI, {
             method: 'POST',
