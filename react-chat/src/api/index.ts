@@ -11,7 +11,6 @@ export type { Chat } from './models/Chat';
 export type { GroupChatPatch } from './models/GroupChatPatch';
 export type { Message } from './models/Message';
 export type { MessageCreate } from './models/MessageCreate';
-export type { MessageFile } from './models/MessageFile';
 export type { TokenObtainPair } from './models/TokenObtainPair';
 export type { TokenRefresh } from './models/TokenRefresh';
 export type { User } from './models/User';

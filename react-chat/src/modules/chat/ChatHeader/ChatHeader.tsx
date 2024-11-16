@@ -23,7 +23,6 @@ const ChatHeader = ({title}: ChatHeaderProps) => {
       <img alt="Avatar" className="avatar" src={avatar} />
       <div className="chat-user-info">
         <h3 className="user-name">{title}</h3>
-        <p className="last-seen">была 2 часа назад</p>
       </div>
       <SearchIcon className="material-symbols-outlined" />
       <MoreVertIcon className="material-symbols-outlined" />

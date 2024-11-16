@@ -12,7 +12,7 @@ const PageLogin = () => {
   return (
     <ChatLayout>
       <div className="form-container">
-        <h1>Messanger</h1>
+        <h1>Messenger</h1>
         {isEnter ? (
           <LoginForm onChange={changeForm} />
         ) : (

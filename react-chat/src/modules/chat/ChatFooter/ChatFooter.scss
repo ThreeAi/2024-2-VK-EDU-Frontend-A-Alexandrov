@@ -1,17 +1,26 @@
 .chat-footer {
 	display: flex;
 	flex-direction: row;
-	align-items: flex-end;
+	align-items: center;
 	padding: 8px;
 	box-sizing: border-box;
-    background-color: white;
+	background-color: white;
 	border-top: 1px solid #ddd;
 }
-
 
 .form {
 	display: flex;
 	flex-grow: 1;
+	align-items: start;
+}
+
+.files {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.file {
+	margin-left: 8px;
 }
 
 .message-input {
@@ -24,9 +33,31 @@
 	scrollbar-width: none;
 	font-size: inherit;
 	line-height: 1;
-    font-family: Arial, sans-serif;
+	font-family: Arial, sans-serif;
 }
 
 textarea:focus {
 	outline: none;
+}
+
+.label-for-file {
+	display: flex;
+}
+
+button {
+	all: unset;
+	cursor: pointer; 
+	display: flex;
+}
+
+.record-btn {
+	display: flex;
+	background-color: #fff;
+	border: none;
+	cursor: pointer;
+	&.recording {
+		background-color: #f00;
+		border-radius: 8px;
+		color: #fff;
+	}
 }

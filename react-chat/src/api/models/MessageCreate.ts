@@ -2,13 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
  
-import type { MessageFile } from './MessageFile';
 export type MessageCreate = {
     readonly id?: string;
     text?: string | null;
-    readonly voice?: string | null;
+    readonly voice?: File | null;
     chat: string;
-    files?: Array<MessageFile>;
+    files?: Array<File>;
     readonly updated_at?: string | null;
     readonly created_at?: string;
 };

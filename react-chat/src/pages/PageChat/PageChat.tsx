@@ -1,65 +1,41 @@
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent, useContext } from 'react';
 import ChatHeader from '../../modules/chat/ChatHeader';
 import ChatBody from '../../modules/message/MessagesList';
 import ChatFooter from '../../modules/chat/ChatFooter';
 import './PageChat.scss';
 import { useParams } from 'react-router-dom';
 import ChatLayout from '../../layouts/ChatLayout';
-import { ChatService, MessagesService, Message, MessageCreate, CentrifugoService} from '../../api';
-import { Centrifuge, Subscription } from 'centrifuge';
+import { ChatService, MessagesService, Message, MessageCreate} from '../../api';
 import Spinner from '../../components/Spinner';
+import { MessageInput } from '../../types/MessageInput';
+import { MessageInputContext } from '../../contexts/MessageInputContext';
+import { CentrifugeContext } from '../../contexts/CentrifugoContext';
+import { blobToFile, notifyMe } from '../../utils/functions';
 
 const PageChat = () => {
   const { chatId } = useParams(); 
 
-  // const wspath = 'ws://localhost:8080/connection/websocket/';
-  const wspath = 'wss://vkedu-fullstack-div2.ru/connection/websocket/';
+  const { newMessage, setNewMessage } = useContext(CentrifugeContext);
 
-  const [messageInput, setMessageInput] = useState('');
+  const [messageInput, setMessageInput] = useState<MessageInput>({text: '', files: []});
   const [messages, setMessages] = useState<Message[]>([]);
   const [isMessagesLoading, setIsMessagesLoading] = useState<boolean>(false);
   const [chatTitle, setChatTitle] = useState<string>();
-  const [centrifuge, setCentrifuge] = useState<Centrifuge | null>(null);
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
-
-  const connect = async () => {
-    const tokenCreate = (await CentrifugoService.centrifugoConnectCreate()).token;
-    const centrifuge = new Centrifuge(wspath, {
-      token: tokenCreate
-    });
-
-    const tokenSubscription = (await CentrifugoService.centrifugoSubscribeCreate()).token
-    const subscription = centrifuge.newSubscription(localStorage.getItem('userId') || '', {
-      token: tokenSubscription
-    });
-  
-    subscription.on('publication', (ctx) => {
-      const newMessage: Message = ctx.data.message;
-      setMessages((prevMessages) => {
-        if (!prevMessages.find((mess) => mess.id === newMessage.id)) {
-          return [...prevMessages, newMessage];
-        }
-        return prevMessages;
-      })
-    });
-  
-    subscription.subscribe();
-    centrifuge.connect();
-    setSubscription(subscription);
-    setCentrifuge(centrifuge);
-  }
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    connect();
-    return () => {
-      if (centrifuge)
-        centrifuge.disconnect();
-      if (subscription) {
-        subscription.removeAllListeners();
-        subscription.unsubscribe();
+    setMessages((prevMessages) => {
+      if (newMessage && newMessage.chat == chatId && !prevMessages.find((mess) => mess.id === newMessage.id)) {
+        return [...prevMessages, newMessage];
       }
-    };
-  }, [chatId]);
+      else if (newMessage && newMessage.chat != chatId) {
+        notifyMe({title: newMessage?.sender.first_name || 'user', message: newMessage?.text || 'files'})
+      }
+      setNewMessage?.(null);
+      return prevMessages;
+    })
+    return () => setNewMessage?.(null);
+  }, [chatId, newMessage, setNewMessage]);
 
   useEffect(() => {
     if (!chatId) return;
@@ -75,19 +51,47 @@ const PageChat = () => {
 
   }, [chatId]);
 
+  const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragging(false);
+    const files = Array.from(event.dataTransfer.files);
+
+    const imageFiles = files.filter((file) => file.type.startsWith('image/'));
+
+    setMessageInput((prevInput) => ({
+      ...prevInput,
+      files: [...prevInput.files, ...imageFiles],
+    }));
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (messageInput.trim() === '') return;
+    if ((!messageInput.text || messageInput.text.trim() === '') && messageInput.files.length === 0 && !messageInput.voice) return;
 
     try {
-      const messageToSend: MessageCreate = {
-        text: messageInput.trim(),
+      const messageToSend: MessageCreate = !messageInput.voice ? {
+        text: messageInput.text ? messageInput.text.trim() : undefined,
         chat: chatId || '', 
-      };
+        files: messageInput.files.length === 0 ? undefined : (messageInput.files as File[]),
+      } : 
+        {
+          voice: blobToFile(messageInput.voice as Blob, 'voice-message.ogg'),
+          chat: chatId || '',
+        };
   
       await MessagesService.messagesCreate(messageToSend);
   
-      setMessageInput('');
+      setMessageInput({text: '', files: [],});
       const form = event.target as HTMLFormElement;
       const textarea = form.querySelector('textarea');
       if (textarea) {
@@ -101,12 +105,18 @@ const PageChat = () => {
   return (
     <ChatLayout>
       <ChatHeader title={chatTitle || ''} />
-      {isMessagesLoading ? <Spinner/> : <ChatBody messages={messages} />}
-      <ChatFooter
-        messageInput={messageInput}
-        handleSubmit={handleSubmit}
-        setMessageInput={setMessageInput}
-      />
+      <div className={`droparea ${isDragging ? 'dragover' : ''}`}
+        onDrop={handleFileDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+      >
+        {isMessagesLoading ? <Spinner/> : <ChatBody messages={messages} />}
+        <MessageInputContext.Provider value={{ messageInput, setMessageInput}}>
+          <ChatFooter
+            handleSubmit={handleSubmit}
+          />
+        </MessageInputContext.Provider>
+      </div>
     </ChatLayout>
   );
 };

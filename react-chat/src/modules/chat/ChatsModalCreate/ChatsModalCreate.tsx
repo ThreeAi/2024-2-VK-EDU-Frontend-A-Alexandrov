@@ -1,4 +1,5 @@
-import './ChatsModalCreat.scss';
+import Modal from '../../../components/Modal';
+// import './ChatsModalCreat.scss';
 
 type ModalProps = {
 	isOpen: boolean;
@@ -7,19 +8,14 @@ type ModalProps = {
 
 
 //пока загатовка, думаю чтоб делать превью чата, без его создания, нужно использовать redux из 9 дз
-const ChatsModalCraete = ({ isOpen, onClose }: ModalProps) => {
+const ChatsModalCreate = ({ isOpen, onClose }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>
-					&times;
-        </button>
-        <h3>Создать новый чат</h3>
-      </div>
-    </div>
+    <Modal onClose={onClose} isOpen={isOpen}>
+      <h3>Создать новый чат</h3>
+    </Modal>
   );
 };
 
-export default ChatsModalCraete;
+export default ChatsModalCreate;

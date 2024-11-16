@@ -2,15 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
  
-import type { MessageFile } from './MessageFile';
 import type { User } from './User';
 export type Message = {
     readonly id?: string;
     text?: string | null;
-    readonly voice?: string | null;
+    readonly voice?: string | Blob;
     sender: User;
     readonly chat?: string;
-    files: Array<MessageFile>;
+    files: Array<File | {item: string}>;
     readonly updated_at?: string | null;
     readonly created_at?: string;
 };

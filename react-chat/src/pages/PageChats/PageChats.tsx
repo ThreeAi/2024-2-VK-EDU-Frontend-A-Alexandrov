@@ -6,7 +6,7 @@ import './PageChats.scss';
 import ChatLayout from '../../layouts/ChatLayout';
 import { ChatsService, Chat } from '../../api';
 import Spinner from '../../components/Spinner';
-import ChatsModalCraete from '../../modules/chat/ChatsModalCreate';
+import ChatsModalCreate from '../../modules/chat/ChatsModalCreate';
 
 const PageChats = () => {
 
@@ -35,7 +35,7 @@ const PageChats = () => {
         style={{ fontSize: '35px' }}
         className="floating-btn material-symbols-outlined"
       /> 
-      <ChatsModalCraete isOpen={isModalOpen} onClose={closeModal}/>
+      <ChatsModalCreate isOpen={isModalOpen} onClose={closeModal}/>
     </ChatLayout>
   );
 };
