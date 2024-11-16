@@ -13,15 +13,21 @@ jobs:
       working-directory: ./react-chat
       run: npm i
     - name: Set environment variables
+      working-directory: ./react-chat
       env:
         VITE_WS_URL: ${{ secrets.VITE_WS_URL }}
         VITE_API_URL: ${{ secrets.VITE_API_URL }}
       run: |
-        echo "VITE_WS_URL=$VITE_WS_URL" >> ./react-chat/.env
-        echo "VITE_API_URL=$VITE_API_URL" >> ./react-chat/.env
+        echo "VITE_WS_URL=$VITE_WS_URL" >> .env
+        echo "VITE_API_URL=$VITE_API_URL" >> .env
     - name: Build app
       working-directory: ./react-chat
-      run: npm run build
+      run: |
+        ls -la
+        cat .env
+        npm run build
+    - name: Debug build output
+      run: ls -la ./react-chat/dist
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v4
       with:
