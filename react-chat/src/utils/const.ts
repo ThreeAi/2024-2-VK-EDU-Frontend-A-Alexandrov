@@ -5,25 +5,14 @@ export enum AppRoute {
     EditProfile = '/profile/edit',
 }
 
-export type Message = {
-    sended: boolean,
-    text: string,
-    time: string,
+export enum AuthorizationStatus {
+    Unknown = "UNKNOWN",
+    Auth = "AUTH",
+    NoAuth = "NO_AUTH",
 }
 
-export type ChatMessages = {
-    id: number;
-    messages: Message[];
+export enum NameSpace{
+    Chat = 'CHAT_DATA',
+    Chats = 'CHATS_DATA',
+    User = 'USER',
 }
-
-export type Chat = {
-    id: string;
-	new: boolean;
-	avatar: string;
-	name: string;
-	message: string;
-	time: string;
-	unread: number | null;
-	tag: boolean;
-	read: boolean;
-};

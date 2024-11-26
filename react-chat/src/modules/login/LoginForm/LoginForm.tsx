@@ -1,21 +1,26 @@
 import { MouseEventHandler, useState } from 'react';
 import InputField from '../../../components/InputField';
-import { ApiError, AuthService, OpenAPI, TokenObtainPair } from '../../../api';
+import { TokenObtainPair } from '../../../api';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../../utils/const';
-import { parseJwt } from '../../../utils/functions';
+import { useAppDispatch } from '../../../hooks';
+import { loginAction } from '../../../store/userProcess/userActions';
 
 type LoginFormProps = {
 	onChange: MouseEventHandler<HTMLButtonElement>;
 }
 
 const LoginForm = ({onChange}: LoginFormProps) => {
+
   const [credentials, setCredentials] = useState<TokenObtainPair>({
     username: '',
     password: ''
   });
   const [error, setError] = useState('');
+
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -28,20 +33,10 @@ const LoginForm = ({onChange}: LoginFormProps) => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); 
 
-    try {
-      const response = await AuthService.authCreate(credentials);
-      localStorage.setItem('accessToken', response.access);
-      localStorage.setItem('refreshToken', response.refresh);
-      localStorage.setItem('userId', parseJwt(response.access).user_id)
-      OpenAPI['TOKEN'] = response.access;
-      setError('');
-      navigate(AppRoute.Chats);
-    } catch (error) {
-      const apiError = error as ApiError;
-      console.error('Login failed:', apiError.body);
-      setError(apiError.body.detail);
-
-    }
+    dispatch(loginAction(credentials)).then(() =>
+      navigate(AppRoute.Chats)
+    )
+    .catch(message => setError(message));  
   };
 
   return (

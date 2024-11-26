@@ -34,7 +34,7 @@ const ChatItem = ({chat}: ChatItemProps) => {
     <Link to={AppRoute.Chat.replace(':chatId', (chat.id || '').toString())}>
       <div ref={chatItemRef} className="chat-item">
         <div className="avatar-conteiner">
-          <img className="avatar" src={avatar} alt="avatar" />
+          <img className="avatar" src={chat.avatar || avatar} alt="avatar" />
         </div>
         <div className="chat-message">
           <span className="chat-name">{chat.title}</span>

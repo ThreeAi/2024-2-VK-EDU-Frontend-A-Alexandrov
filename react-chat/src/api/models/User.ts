@@ -12,5 +12,7 @@ export type User = {
     last_name: string;
     bio?: string | null;
     readonly avatar?: string | null;
+    last_online: string;
+    is_online: boolean;
 };
 
