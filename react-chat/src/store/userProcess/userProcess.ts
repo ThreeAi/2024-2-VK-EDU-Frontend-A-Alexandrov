@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { UserProcess } from "../../types/state";
 import { AuthorizationStatus, NameSpace } from "../../utils/const";
-import { fetchUserAction, loginAction } from "./userActions";
+import { fetchUserAction, loginAction, refreshAction, updateUserAction } from "./userActions";
 
 const initialState: UserProcess = {
     user: {
@@ -29,12 +29,21 @@ export const userProcess = createSlice({
             state.authorizationStatus = AuthorizationStatus.NoAuth;
             throw action.error.message;
         })
+        .addCase(refreshAction.fulfilled, (state) => {
+            state.authorizationStatus = AuthorizationStatus.Auth;
+        })
+        .addCase(refreshAction.rejected, (state) => {
+            state.authorizationStatus = AuthorizationStatus.NoAuth;
+        })
         .addCase(fetchUserAction.pending, (state) => {
             state.isUserDataLoading = true;
         })
         .addCase(fetchUserAction.fulfilled, (state, action) => {
             state.user = action.payload; 
             state.isUserDataLoading = false;
+        })
+        .addCase(updateUserAction, (state, action) => {
+            state.user = action.payload; 
         })
     }
 })

@@ -1,6 +1,6 @@
 import './App.css';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import { AppRoute } from './utils/const';
+import { AppRoute, AuthorizationStatus } from './utils/const';
 import PageChat from './pages/PageChat';
 import PageChats from './pages/PageChats';
 import PageEditProfile from './pages/PageEditProfile';
@@ -9,6 +9,10 @@ import { CentrifugeContext } from './contexts/CentrifugoContext';
 import { useEffect, useState } from 'react';
 import { Centrifuge, Subscription } from 'centrifuge';
 import { CentrifugoService, Message } from './api';
+import { Token } from './api/models/Token';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { getUserAuthStatus } from './store/userProcess/selectors';
+import { refreshAction } from './store/userProcess/userActions';
 const wsUrl = import.meta.env.VITE_WS_URL || '';
 
 
@@ -18,15 +22,28 @@ function App () {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [newMessage, setNewMessage] = useState<Message | null>(null);
 
+  const AuthStatus = useAppSelector(getUserAuthStatus)
+  const dispatch = useAppDispatch();
+
   const connect = async () => {
-    const tokenCreate = (await CentrifugoService.centrifugoConnectCreate()).token;
     const centrifuge = new Centrifuge(wsUrl, {
-      token: tokenCreate
+      getToken: () =>
+        CentrifugoService.centrifugoConnectCreate()
+          .then((response: Token) => response.token)
+          .catch((error) => {
+            console.error('Error fetching connection token:', error);
+            throw error;
+          }),
     });
 
-    const tokenSubscription = (await CentrifugoService.centrifugoSubscribeCreate()).token
     const subscription = centrifuge.newSubscription(localStorage.getItem('userId') || '', {
-      token: tokenSubscription
+      getToken: () =>
+        CentrifugoService.centrifugoSubscribeCreate()
+          .then((response: Token) => response.token)
+          .catch((error) => {
+            console.error('Error fetching subscription token:', error);
+            throw error;
+          }),
     });
   
     subscription.on('publication', (ctx) => {
@@ -41,7 +58,8 @@ function App () {
   }
 
   useEffect(() => {
-    connect();
+    if (AuthStatus === AuthorizationStatus.Auth)
+      connect();
     return () => {
       if (centrifuge)
         centrifuge.disconnect();
@@ -50,7 +68,12 @@ function App () {
         subscription.unsubscribe();
       }
     };
-  }, []);
+  }, [AuthStatus]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('refreshToken')
+    token && dispatch(refreshAction(token));
+  },[])
   
   return (
     <CentrifugeContext.Provider value={{centrifuge: centrifuge, subscription: subscription, newMessage: newMessage, setNewMessage: setNewMessage}}>

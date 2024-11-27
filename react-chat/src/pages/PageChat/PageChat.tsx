@@ -92,7 +92,7 @@ const PageChat = () => {
 
   return (
     <ChatLayout>
-      <ChatHeader title={chat.title || ''} />
+      <ChatHeader avatar={chat.avatar} title={chat.title || ''} />
       <div className={`droparea ${isDragging ? 'dragover' : ''}`}
         onDrop={handleFileDrop}
         onDragOver={handleDragOver}

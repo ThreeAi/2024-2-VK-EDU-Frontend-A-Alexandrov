@@ -4,7 +4,11 @@ import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';import HeaderLay
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../../utils/const';
 
-const ProfileHeader = () => {
+type ProfileHeaderProps = {
+  onSubmit: () => void;
+}
+
+const ProfileHeader = ({ onSubmit }: ProfileHeaderProps) => {
   return (
     <HeaderLayout>
       <Link to={AppRoute.Chats}>
@@ -14,7 +18,9 @@ const ProfileHeader = () => {
         />
       </Link>
       <h3 className="edit-title">Edit Profile</h3>
-      <DoneOutlinedIcon className="material-symbols-outlined" />
+      <button onClick={onSubmit}>
+        <DoneOutlinedIcon className="material-symbols-outlined" />
+      </button>
     </HeaderLayout>
   );
 };
