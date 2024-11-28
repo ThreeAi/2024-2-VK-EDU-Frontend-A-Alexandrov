@@ -36,3 +36,8 @@ export const notifyMe = ({title, message}: NotifyArgs) => {
 export const blobToFile = (blob: Blob, fileName: string): File => {
   return new File([blob], fileName, { type: blob.type });
 };
+
+export const truncateText = (text: string | undefined, maxLength: number): string => {
+  if (!text) return "";
+  return text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
+};
