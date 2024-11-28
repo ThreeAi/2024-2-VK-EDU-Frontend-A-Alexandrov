@@ -1,6 +1,6 @@
-import { Chat, Message, User } from "../api";
-import { store } from "../store";
-import { AuthorizationStatus } from "../utils/const";
+import { Chat, Message, User } from '../api';
+import { store } from '../store';
+import { AuthorizationStatus } from '../utils/const';
 
 export type State = ReturnType<typeof store.getState>;
 

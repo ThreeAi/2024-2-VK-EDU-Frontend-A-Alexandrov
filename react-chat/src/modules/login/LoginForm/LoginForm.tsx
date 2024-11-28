@@ -36,7 +36,7 @@ const LoginForm = ({onChange}: LoginFormProps) => {
     dispatch(loginAction(credentials)).then(() =>
       navigate(AppRoute.Chats)
     )
-    .catch(message => setError(message));  
+      .catch(message => setError(message));  
   };
 
   return (
