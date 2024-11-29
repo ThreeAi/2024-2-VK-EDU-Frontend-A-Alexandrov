@@ -23,9 +23,16 @@ function App () {
   const [centrifuge, setCentrifuge] = useState<Centrifuge | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [newMessage, setNewMessage] = useState<Message | null>(null);
+  const [lastVisitedPath, setLastVisitedPath] = useState<string | null>(null);
 
   const AuthStatus = useAppSelector(getUserAuthStatus)
   const dispatch = useAppDispatch();
+
+  const saveLastVisitedPath = () => {
+    localStorage.setItem('lastVisitedPath', location.hash);
+  }
+
+  window.addEventListener('beforeunload', saveLastVisitedPath)
 
   const connect = async () => {
     const centrifuge = new Centrifuge(wsUrl, {
@@ -73,7 +80,8 @@ function App () {
   }, [AuthStatus]);
 
   useEffect(() => {
-    const token = localStorage.getItem('refreshToken')
+    setLastVisitedPath(localStorage.getItem('lastVisitedPath'));
+    const token = localStorage.getItem('refreshToken');
     if (token) {
       dispatch(refreshAction(token));
     }
@@ -89,7 +97,7 @@ function App () {
             <Route path={AppRoute.EditProfile} element={<PageEditProfile />} />
           </Route>
 
-          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.NoAuth, AuthorizationStatus.Unknown]} redirect={AppRoute.Chats} />}>
+          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.NoAuth, AuthorizationStatus.Unknown]} redirect={`/${lastVisitedPath?.slice(2)}` || AppRoute.Chats} />}>
             <Route path={AppRoute.Login} element={<PageLogin />} />
           </Route>
 
