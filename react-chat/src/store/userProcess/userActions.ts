@@ -1,6 +1,7 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthService, OpenAPI, TokenObtainPair, User, UserService } from '../../api';
 import { parseJwt } from '../../utils/functions';
+import { AuthorizationStatus } from '../../utils/const';
 
 
 export const loginAction = createAsyncThunk<
@@ -33,3 +34,5 @@ export const fetchUserAction = createAsyncThunk<
 })
 
 export const updateUserAction = createAction<User>('user/updateUser');
+
+export const updateUserAuthStatusAction = createAction<AuthorizationStatus>('user/updateUserAuthStatus');

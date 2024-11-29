@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState } from 'react';
-import InputField from '../../../components/InputField'
+import InputField, { PasswordField } from '../../../components/InputField'
 import { ApiError, RegisterService } from '../../../api';
 
 type RegistrationFormProps = {
@@ -39,13 +39,13 @@ const RegistrationForm = ({onChange}: RegistrationFormProps) => {
   return (
     <form onSubmit={handleSubmit}>
       <InputField label="Username" name="username" value={formData.username} onChange={handleChange} />
-      <InputField label="Password" name="password" value={formData.password} onChange={handleChange} />
+      <PasswordField label="Password" name="password" value={formData.password} onChange={handleChange} />
       <InputField label="First Name" name="first_name" value={formData.first_name} onChange={handleChange} />
       <InputField label="Last Name" name="last_name" value={formData.last_name} onChange={handleChange} />
       <InputField label="Bio" name="bio" value={formData.bio} onChange={handleChange} />
-      <div>
-        <button type="submit">Register</button>
+      <div className='login-form-buttons'>
         <button onClick={onChange}>Login</button>
+        <button type="submit">Registration</button>
       </div>
     </form>
   );

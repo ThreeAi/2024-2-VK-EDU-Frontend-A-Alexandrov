@@ -13,11 +13,13 @@ const PageLogin = () => {
     <ChatLayout>
       <div className="form-container">
         <h1>Messenger</h1>
-        {isEnter ? (
-          <LoginForm onChange={changeForm} />
-        ) : (
-          <RegistrationForm onChange={changeForm}/>
-        )}
+        <div>
+          {isEnter ? (
+            <LoginForm onChange={changeForm} />
+          ) : (
+            <RegistrationForm onChange={changeForm}/>
+          )}
+        </div>
       </div>
     </ChatLayout>
   );

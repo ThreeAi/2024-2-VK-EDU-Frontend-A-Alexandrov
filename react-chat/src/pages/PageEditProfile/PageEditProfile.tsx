@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import LogoutIcon from '@mui/icons-material/Logout';
 import ChatLayout from '../../layouts/ChatLayout';
 import ProfileHeader from '../../modules/profile/ProfileHeader';
 import './PageEditProfile.scss';
@@ -8,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import {
   fetchUserAction,
   updateUserAction,
+  updateUserAuthStatusAction,
 } from '../../store/userProcess/userActions';
 import {
   getIsUserDataLoading,
@@ -15,11 +17,15 @@ import {
 } from '../../store/userProcess/selectors';
 import { UserService } from '../../api';
 import Spinner from '../../components/Spinner';
+import { AppRoute, AuthorizationStatus } from '../../utils/const';
+import { useNavigate } from 'react-router-dom';
 
 const PageEditProfile = () => {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
 
   const dispatch = useAppDispatch();
+
+  const naviate = useNavigate();
 
   const user = useAppSelector(getUser);
   const isUserDataLoading = useAppSelector(getIsUserDataLoading);
@@ -42,12 +48,18 @@ const PageEditProfile = () => {
 
   const handleSubmit = () => {
     const userId = localStorage.getItem('userId');
-    userId &&
-            UserService.userPartialUpdate(
-              userId,
-              avatarFile ? { ...user, avatar: avatarFile } : { ...user, avatar: undefined }
-            ).then(() => dispatch(fetchUserAction(localStorage.getItem('userId') || '')))
+    if (userId)
+      UserService.userPartialUpdate(
+        userId,
+        avatarFile ? { ...user, avatar: avatarFile } : { ...user, avatar: undefined }
+      ).then(() => dispatch(fetchUserAction(localStorage.getItem('userId') || '')))
   };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch(updateUserAuthStatusAction(AuthorizationStatus.NoAuth));
+    naviate(AppRoute.Login);
+  }
 
   return (
     <ChatLayout>
@@ -89,6 +101,10 @@ const PageEditProfile = () => {
             description={'Any details about you'}
             onChange={handleChange}
           />
+          <button onClick={handleLogout} className='logout-button'>
+            Logout
+            <LogoutIcon/>
+          </button>
         </div>
       )}
     </ChatLayout>

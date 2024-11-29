@@ -13,6 +13,8 @@ import { Token } from './api/models/Token';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { getUserAuthStatus } from './store/userProcess/selectors';
 import { refreshAction } from './store/userProcess/userActions';
+import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
+import { NotFound } from './pages/PageNotFound';
 const wsUrl = import.meta.env.VITE_WS_URL || '';
 
 
@@ -72,17 +74,26 @@ function App () {
 
   useEffect(() => {
     const token = localStorage.getItem('refreshToken')
-    token && dispatch(refreshAction(token));
+    if (token) {
+      dispatch(refreshAction(token));
+    }
   },[])
   
   return (
     <CentrifugeContext.Provider value={{centrifuge: centrifuge, subscription: subscription, newMessage: newMessage, setNewMessage: setNewMessage}}>
       <HashRouter>
         <Routes>
-          <Route path={AppRoute.Login} element={<PageLogin />} />
-          <Route path={AppRoute.Chats} element={<PageChats />} />
-          <Route path={AppRoute.Chat} element={<PageChat />} />
-          <Route path={AppRoute.EditProfile} element={<PageEditProfile />} />
+          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.Auth]} redirect={AppRoute.Login} />}>
+            <Route path={AppRoute.Chats} element={<PageChats />} />
+            <Route path={AppRoute.Chat} element={<PageChat />} />
+            <Route path={AppRoute.EditProfile} element={<PageEditProfile />} />
+          </Route>
+
+          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.NoAuth, AuthorizationStatus.Unknown]} redirect={AppRoute.Chats} />}>
+            <Route path={AppRoute.Login} element={<PageLogin />} />
+          </Route>
+
+          <Route path='*' element={<NotFound/>}/>
         </Routes>
       </HashRouter>
     </CentrifugeContext.Provider>
