@@ -7,7 +7,7 @@ import './ChatItem.scss';
 import { AppRoute } from '../../../utils/const';
 import { Link } from 'react-router-dom';
 import { Chat } from '../../../api';
-import { parseTime } from '../../../utils/functions';
+import { parseTime, truncateText } from '../../../utils/functions';
 
 type ChatItemProps = {
 	chat: Chat;
@@ -16,29 +16,15 @@ type ChatItemProps = {
 const ChatItem = ({chat}: ChatItemProps) => {
   const chatItemRef = useRef<HTMLDivElement | null>(null);
 
-  //это анимация появления чата в последствии думаю пригодиться
-  // useEffect(() => {
-  //   if (chat.new) {
-  //     const newChatElement = chatItemRef.current;
-  //     if (newChatElement) {
-  //       newChatElement.classList.add('chat-item-animation');
-
-  //       setTimeout(() => {
-  //         newChatElement.classList.add('appear');
-  //       }, 50);
-  //     }
-  //   }
-  // }, [chat.new]);
-
   return (
     <Link to={AppRoute.Chat.replace(':chatId', (chat.id || '').toString())}>
       <div ref={chatItemRef} className="chat-item">
         <div className="avatar-conteiner">
-          <img className="avatar" src={avatar} alt="avatar" />
+          <img className="avatar" src={chat.avatar || avatar} alt="avatar" />
         </div>
         <div className="chat-message">
           <span className="chat-name">{chat.title}</span>
-          <p>{chat.last_message?.text}</p>
+          <p>{truncateText(chat.last_message?.text, 30)}</p>
         </div>
         <div className="chat-details">
           <span className="chat-time">{parseTime(chat.updated_at || '')}</span>

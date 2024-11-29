@@ -41,8 +41,8 @@ export class ChatsService {
      * @throws ApiError
      */
     public static chatsCreate(
-        data: Chat,
-    ): CancelablePromise<ChatCreate> {
+        data: ChatCreate,
+    ): CancelablePromise<Chat> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/chats/',

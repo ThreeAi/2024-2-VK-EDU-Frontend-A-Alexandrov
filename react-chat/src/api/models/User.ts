@@ -11,6 +11,8 @@ export type User = {
     first_name: string;
     last_name: string;
     bio?: string | null;
-    readonly avatar?: string | null;
+    readonly avatar?: string | null | File;
+    last_online: string;
+    is_online: boolean;
 };
 

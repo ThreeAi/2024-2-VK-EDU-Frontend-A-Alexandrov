@@ -4,25 +4,26 @@ import ChatsList from '../../modules/chat/ChatsList';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import './PageChats.scss';
 import ChatLayout from '../../layouts/ChatLayout';
-import { ChatsService, Chat } from '../../api';
 import Spinner from '../../components/Spinner';
 import ChatsModalCreate from '../../modules/chat/ChatsModalCreate';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchChatsAction } from '../../store/chatsProcess/chatsActions';
+import { getChats, getIsChatsDataLoading } from '../../store/chatsProcess/selectors';
 
 const PageChats = () => {
 
-  const [chats, setChats] = useState<Chat[]>([]);
-  const [isChatsLoading, setIsChatsLoading] = useState<boolean>(false);
   const [isModalOpen, setModalOpen] = useState(false);
+
+  const chats = useAppSelector(getChats);
+  const isChatsLoading = useAppSelector(getIsChatsDataLoading);
+
+  const dispatch = useAppDispatch();
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
   useEffect(() => {
-    setIsChatsLoading(true);
-    ChatsService.chatsList()
-      .then((response) => setChats(response.results))
-      .catch((err) => console.error('Error loading chats:', err))
-      .finally(() => setIsChatsLoading(false));
+    dispatch(fetchChatsAction());
   }, []);
 
   return (

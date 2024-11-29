@@ -1,6 +1,6 @@
 export type ChatCreate = {
     members: string[];
-    is_privage: boolean;
-    title: string;
+    is_private: boolean;
+    title?: string;
     avatar?: string;
 }

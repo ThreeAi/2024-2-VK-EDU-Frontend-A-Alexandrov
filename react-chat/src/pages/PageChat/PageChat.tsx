@@ -5,50 +5,38 @@ import ChatFooter from '../../modules/chat/ChatFooter';
 import './PageChat.scss';
 import { useParams } from 'react-router-dom';
 import ChatLayout from '../../layouts/ChatLayout';
-import { ChatService, MessagesService, Message, MessageCreate} from '../../api';
+import { MessagesService, MessageCreate} from '../../api';
 import Spinner from '../../components/Spinner';
 import { MessageInput } from '../../types/MessageInput';
 import { MessageInputContext } from '../../contexts/MessageInputContext';
 import { CentrifugeContext } from '../../contexts/CentrifugoContext';
-import { blobToFile, notifyMe } from '../../utils/functions';
+import { blobToFile } from '../../utils/functions';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getChat, getIsMessagesDataLoading, getMessages } from '../../store/chatProcess/selectors';
+import { addNewMessageAction, fetchMessagesAction, fethcChatAction } from '../../store/chatProcess/chatActions';
 
 const PageChat = () => {
   const { chatId } = useParams(); 
 
-  const { newMessage, setNewMessage } = useContext(CentrifugeContext);
+  const { newMessage, setNewMessage} = useContext(CentrifugeContext);
 
   const [messageInput, setMessageInput] = useState<MessageInput>({text: '', files: []});
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isMessagesLoading, setIsMessagesLoading] = useState<boolean>(false);
-  const [chatTitle, setChatTitle] = useState<string>();
   const [isDragging, setIsDragging] = useState(false);
 
+  const dispatch = useAppDispatch();
+  const chat = useAppSelector(getChat);
+  const messages = useAppSelector(getMessages);
+  const isMessagesLoading = useAppSelector(getIsMessagesDataLoading);
+
   useEffect(() => {
-    setMessages((prevMessages) => {
-      if (newMessage && newMessage.chat == chatId && !prevMessages.find((mess) => mess.id === newMessage.id)) {
-        return [...prevMessages, newMessage];
-      }
-      else if (newMessage && newMessage.chat != chatId) {
-        notifyMe({title: newMessage?.sender.first_name || 'user', message: newMessage?.text || 'files'})
-      }
-      setNewMessage?.(null);
-      return prevMessages;
-    })
-    return () => setNewMessage?.(null);
-  }, [chatId, newMessage, setNewMessage]);
+    newMessage && dispatch(addNewMessageAction(newMessage))
+    setNewMessage && setNewMessage(null);
+  }, [chatId, newMessage]);
 
   useEffect(() => {
     if (!chatId) return;
-    ChatService.chatRead(chatId)
-      .then(fetchedChat => setChatTitle(fetchedChat.title))
-      .catch(error => console.error('Failed to fetch chat title:', error));
-
-    setIsMessagesLoading(true);
-    MessagesService.messagesList(chatId)
-      .then(response => setMessages(response.results.reverse()))
-      .catch(error => console.error('Failed to fetch messages:', error))
-      .finally(() => setIsMessagesLoading(false));
-
+    dispatch(fethcChatAction(chatId));
+    dispatch(fetchMessagesAction(chatId))
   }, [chatId]);
 
   const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
@@ -104,7 +92,7 @@ const PageChat = () => {
 
   return (
     <ChatLayout>
-      <ChatHeader title={chatTitle || ''} />
+      <ChatHeader avatar={chat.avatar} title={chat.title || ''} />
       <div className={`droparea ${isDragging ? 'dragover' : ''}`}
         onDrop={handleFileDrop}
         onDragOver={handleDragOver}

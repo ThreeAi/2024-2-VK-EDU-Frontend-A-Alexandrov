@@ -29,36 +29,20 @@ export class UserService {
      * @returns User
      * @throws ApiError
      */
-    public static userUpdate(
-        id: string,
-        data: User,
-    ): CancelablePromise<User> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/user/{id}/',
-            path: {
-                'id': id,
-            },
-            body: data,
-        });
-    }
-    /**
-     * @param id A UUID string identifying this user.
-     * @param data
-     * @returns User
-     * @throws ApiError
-     */
     public static userPartialUpdate(
         id: string,
         data: User,
     ): CancelablePromise<User> {
+        const hasFiles = data.avatar instanceof File;
+
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/user/{id}/',
             path: {
                 'id': id,
             },
-            body: data,
+            formData: hasFiles ? data : undefined,  
+            body: hasFiles ? undefined : data,
         });
     }
     /**
