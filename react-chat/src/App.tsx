@@ -13,6 +13,8 @@ import { Token } from './api/models/Token';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { getUserAuthStatus } from './store/userProcess/selectors';
 import { refreshAction } from './store/userProcess/userActions';
+import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
+import { NotFound } from './pages/PageNotFound';
 const wsUrl = import.meta.env.VITE_WS_URL || '';
 
 
@@ -21,9 +23,16 @@ function App () {
   const [centrifuge, setCentrifuge] = useState<Centrifuge | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [newMessage, setNewMessage] = useState<Message | null>(null);
+  const [lastVisitedPath, setLastVisitedPath] = useState<string | null>(null);
 
   const AuthStatus = useAppSelector(getUserAuthStatus)
   const dispatch = useAppDispatch();
+
+  const saveLastVisitedPath = () => {
+    localStorage.setItem('lastVisitedPath', location.hash);
+  }
+
+  window.addEventListener('beforeunload', saveLastVisitedPath)
 
   const connect = async () => {
     const centrifuge = new Centrifuge(wsUrl, {
@@ -71,18 +80,28 @@ function App () {
   }, [AuthStatus]);
 
   useEffect(() => {
-    const token = localStorage.getItem('refreshToken')
-    token && dispatch(refreshAction(token));
+    setLastVisitedPath(localStorage.getItem('lastVisitedPath'));
+    const token = localStorage.getItem('refreshToken');
+    if (token) {
+      dispatch(refreshAction(token));
+    }
   },[])
   
   return (
     <CentrifugeContext.Provider value={{centrifuge: centrifuge, subscription: subscription, newMessage: newMessage, setNewMessage: setNewMessage}}>
       <HashRouter>
         <Routes>
-          <Route path={AppRoute.Login} element={<PageLogin />} />
-          <Route path={AppRoute.Chats} element={<PageChats />} />
-          <Route path={AppRoute.Chat} element={<PageChat />} />
-          <Route path={AppRoute.EditProfile} element={<PageEditProfile />} />
+          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.Auth]} redirect={AppRoute.Login} />}>
+            <Route path={AppRoute.Chats} element={<PageChats />} />
+            <Route path={AppRoute.Chat} element={<PageChat />} />
+            <Route path={AppRoute.EditProfile} element={<PageEditProfile />} />
+          </Route>
+
+          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.NoAuth, AuthorizationStatus.Unknown]} redirect={`/${lastVisitedPath?.slice(2)}` || AppRoute.Chats} />}>
+            <Route path={AppRoute.Login} element={<PageLogin />} />
+          </Route>
+
+          <Route path='*' element={<NotFound/>}/>
         </Routes>
       </HashRouter>
     </CentrifugeContext.Provider>

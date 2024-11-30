@@ -29,8 +29,10 @@ const PageChat = () => {
   const isMessagesLoading = useAppSelector(getIsMessagesDataLoading);
 
   useEffect(() => {
-    newMessage && dispatch(addNewMessageAction(newMessage))
-    setNewMessage && setNewMessage(null);
+    if (newMessage)
+      dispatch(addNewMessageAction(newMessage))
+    if (setNewMessage)
+      setNewMessage(null);
   }, [chatId, newMessage]);
 
   useEffect(() => {

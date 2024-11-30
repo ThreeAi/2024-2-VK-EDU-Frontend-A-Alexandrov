@@ -10,7 +10,7 @@ type InputFieldProps = {
 
 const InputField = ({ label, name, value, onChange, description } : InputFieldProps) => {
   return (
-    <div className="input-group-conteiner">
+    <div className="input-group-container">
       <div className="input-group">
         <label>{label}</label>
         <input

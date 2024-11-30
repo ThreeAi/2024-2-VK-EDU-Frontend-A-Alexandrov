@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState } from 'react';
-import InputField from '../../../components/InputField';
+import InputField, { PasswordField } from '../../../components/InputField';
 import { TokenObtainPair } from '../../../api';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../../utils/const';
@@ -47,13 +47,13 @@ const LoginForm = ({onChange}: LoginFormProps) => {
         value={credentials.username}
         onChange={handleChange}
       />
-      <InputField
+      <PasswordField
         label="Password"
         name="password"
         value={credentials.password}
         onChange={handleChange}
       />
-      <div>
+      <div className='login-form-buttons'>
         <button type="submit">Login</button>
         <button onClick={onChange}>Registration</button>
       </div>

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { UserProcess } from '../../types/state';
 import { AuthorizationStatus, NameSpace } from '../../utils/const';
-import { fetchUserAction, loginAction, refreshAction, updateUserAction } from './userActions';
+import { fetchUserAction, loginAction, refreshAction, updateUserAction, updateUserAuthStatusAction } from './userActions';
 
 const initialState: UserProcess = {
   user: {
@@ -44,6 +44,9 @@ export const userProcess = createSlice({
       })
       .addCase(updateUserAction, (state, action) => {
         state.user = action.payload; 
+      })
+      .addCase(updateUserAuthStatusAction, (state, action) => {
+        state.authorizationStatus = action.payload; 
       })
   }
 })
