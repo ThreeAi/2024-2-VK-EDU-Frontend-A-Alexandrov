@@ -14,7 +14,6 @@ import { useAppDispatch, useAppSelector } from './hooks';
 import { getUserAuthStatus } from './store/userProcess/selectors';
 import { refreshAction } from './store/userProcess/userActions';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
-import { NotFound } from './pages/PageNotFound';
 const wsUrl = import.meta.env.VITE_WS_URL || '';
 
 
@@ -91,17 +90,19 @@ function App () {
     <CentrifugeContext.Provider value={{centrifuge: centrifuge, subscription: subscription, newMessage: newMessage, setNewMessage: setNewMessage}}>
       <HashRouter>
         <Routes>
+
           <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.Auth]} redirect={AppRoute.Login} />}>
             <Route path={AppRoute.Chats} element={<PageChats />} />
             <Route path={AppRoute.Chat} element={<PageChat />} />
             <Route path={AppRoute.EditProfile} element={<PageEditProfile />} />
+            <Route path='*' element={<PageChats />}/>
           </Route>
 
-          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.NoAuth, AuthorizationStatus.Unknown]} redirect={`/${lastVisitedPath?.slice(2)}` || AppRoute.Chats} />}>
+          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.NoAuth, AuthorizationStatus.Unknown]} redirect={`/${lastVisitedPath?.slice(2) ?? AppRoute.Chats}`} />}>
             <Route path={AppRoute.Login} element={<PageLogin />} />
+            <Route path='*' element={<PageLogin />}/>
           </Route>
 
-          <Route path='*' element={<NotFound/>}/>
         </Routes>
       </HashRouter>
     </CentrifugeContext.Provider>

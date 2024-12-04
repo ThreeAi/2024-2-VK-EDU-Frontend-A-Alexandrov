@@ -21,7 +21,7 @@ const ChatBody = ({ messages } : ChatBodyProps) => {
     <>
       <div className="space"></div>
       <div className="chat-body" ref={chatBodyRef}>
-        {messages.map(message => (
+        {[...messages].reverse().map(message => (
           <MessageItem key={message.id} message={message} />
         ))}
       </div>
