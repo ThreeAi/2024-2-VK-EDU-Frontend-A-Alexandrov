@@ -23,6 +23,15 @@ const ChatsModalCreate = ({ isOpen, onClose }: ModalProps) => {
 
   const filterTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  useEffect(() => {
+    return () => {
+      if (filterTimeout.current) {
+        clearTimeout(filterTimeout.current);
+        filterTimeout.current = null; 
+      }
+    };
+  }, []);
+
   const fetchUsers = async (search: string) => {
     if (filterTimeout.current) {
       clearTimeout(filterTimeout.current);

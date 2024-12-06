@@ -42,7 +42,7 @@ export const chatProcess = createSlice({
         state.isMessagesDataLoading = true;
       })
       .addCase(fetchMessagesAction.fulfilled, (state, action) => {
-        state.messages = action.payload.reverse();
+        state.messages = action.payload;
         state.isMessagesDataLoading = false;
       })
       .addCase(addNewMessageAction, (state, action) => {
