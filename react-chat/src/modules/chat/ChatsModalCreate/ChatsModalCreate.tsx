@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '../../../components/Modal';
 import './ChatsModalCreat.scss';
 import { ChatsService, User, UsersService } from '../../../api';
@@ -21,16 +21,33 @@ const ChatsModalCreate = ({ isOpen, onClose }: ModalProps) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const filterTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (filterTimeout.current) {
+        clearTimeout(filterTimeout.current);
+        filterTimeout.current = null; 
+      }
+    };
+  }, []);
+
   const fetchUsers = async (search: string) => {
-    setIsLoading(true);
-    try {
-      const response = await UsersService.usersList(search, 1, 10);
-      setUsers(response.results);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    } finally {
-      setIsLoading(false);
+    if (filterTimeout.current) {
+      clearTimeout(filterTimeout.current);
     }
+
+    filterTimeout.current = setTimeout(async () => {
+      setIsLoading(true);
+      try {
+        const response = await UsersService.usersList(search, 1, 10);
+        setUsers(response.results);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 500);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
