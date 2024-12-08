@@ -12,6 +12,9 @@ jobs:
     - name: Install npm deps
       working-directory: ./react-chat
       run: npm i
+    - name: Run ESLint
+      working-directory: ./react-chat
+      run: npm run lint -- --fix
     - name: Set environment variables
       working-directory: ./react-chat
       env:
