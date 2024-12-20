@@ -12,7 +12,7 @@ import { CentrifugoService, Message } from './api';
 import { Token } from './api/models/Token';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { getUserAuthStatus } from './store/userProcess/selectors';
-import { refreshAction } from './store/userProcess/userActions';
+import { refreshAction, updateUserAuthStatusAction } from './store/userProcess/userActions';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 const wsUrl = import.meta.env.VITE_WS_URL || '';
 
@@ -22,16 +22,9 @@ function App () {
   const [centrifuge, setCentrifuge] = useState<Centrifuge | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [newMessage, setNewMessage] = useState<Message | null>(null);
-  const [lastVisitedPath, setLastVisitedPath] = useState<string | null>(null);
 
   const AuthStatus = useAppSelector(getUserAuthStatus)
   const dispatch = useAppDispatch();
-
-  const saveLastVisitedPath = () => {
-    localStorage.setItem('lastVisitedPath', location.hash);
-  }
-
-  window.addEventListener('beforeunload', saveLastVisitedPath)
 
   const connect = async () => {
     const centrifuge = new Centrifuge(wsUrl, {
@@ -79,10 +72,12 @@ function App () {
   }, [AuthStatus]);
 
   useEffect(() => {
-    setLastVisitedPath(localStorage.getItem('lastVisitedPath'));
     const token = localStorage.getItem('refreshToken');
     if (token) {
       dispatch(refreshAction(token));
+    }
+    else {
+      dispatch(updateUserAuthStatusAction(AuthorizationStatus.NoAuth));
     }
   },[])
   
@@ -98,7 +93,7 @@ function App () {
             <Route path='*' element={<PageChats />}/>
           </Route>
 
-          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.NoAuth, AuthorizationStatus.Unknown]} redirect={`/${lastVisitedPath?.slice(2) ?? AppRoute.Chats}`} />}>
+          <Route path='/' element={<PrivateRoute requiredStatuses={[AuthorizationStatus.NoAuth]} redirect={AppRoute.Chats} />}>
             <Route path={AppRoute.Login} element={<PageLogin />} />
             <Route path='*' element={<PageLogin />}/>
           </Route>
