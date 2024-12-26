@@ -11,6 +11,7 @@ import type { OnCancel } from './CancelablePromise';
 import { OpenAPI, type OpenAPIConfig } from './OpenAPI';
 import { parseJwt } from '../../utils/functions';
 import { AppRoute } from '../../utils/const';
+import { toast } from 'react-toastify';
 
 export const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
     return value !== undefined && value !== null;
@@ -266,6 +267,7 @@ export const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): 
 
     const error = errors[result.status];
     if (error) {
+        toast(`${error}: ${JSON.stringify(result.body, null, 2)}`);
         throw new ApiError(options, result, error);
     }
 
